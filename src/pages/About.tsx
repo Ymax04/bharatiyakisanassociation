@@ -1,0 +1,320 @@
+import { motion } from "framer-motion";
+import { Target, Eye, Heart, Sprout, ArrowLeft, Users, Crown, Shield, BookOpen, Landmark } from "lucide-react";
+import { Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import TopBanner from "@/components/TopBanner";
+import FooterSection from "@/components/FooterSection";
+
+import memberVinod from "@/assets/member-vinod-kumar.jpg";
+import memberAmit from "@/assets/member-amit-raj.jpg";
+import memberIndra from "@/assets/member-indra-yadav.jpg";
+import memberAlok from "@/assets/member-alok-yadav.jpg";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.12, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  }),
+};
+
+const slideLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const } },
+};
+
+const slideRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const } },
+};
+
+const leaders = [
+  {
+    name: "श्री विनोद कुमार",
+    nameEn: "Mr. Vinod Kumar",
+    position: "संरक्षक / उपाध्यक्ष",
+    description: "संगठन के सर्वोच्च संरक्षक और राष्ट्रीय स्तर पर किसानों की आवाज़। उनकी अगुवाई में संगठन ने कई बड़ी मांगों को सफलतापूर्वक पूरा किया है।",
+    photo: memberVinod,
+    icon: <Crown size={18} />,
+  },
+  {
+    name: "श्री अमित राज यदुवंशी",
+    nameEn: "Mr. Amit Raj Yaduvanshi",
+    position: "राष्ट्रीय अध्यक्ष",
+    description: "संगठन के संस्थापक और राष्ट्रीय अध्यक्ष। किसानों को एकजुट करने और उनकी समस्याओं को हल करने में अग्रणी भूमिका।",
+    photo: memberAmit,
+    icon: <Shield size={18} />,
+  },
+  {
+    name: "श्रीमती इंद्रा यादव",
+    nameEn: "Indra Yadav",
+    position: "राष्ट्रीय कोषाध्यक्ष",
+    description: "संगठन की वित्तीय पारदर्शिता और ईमानदारी के संरक्षक। हर पैसे का हिसाब रखने वाले।",
+    photo: memberIndra,
+    icon: <Landmark size={18} />,
+  },
+  {
+    name: "श्री आलोक यादव",
+    nameEn: "Alok Yadav",
+    position: "राष्ट्रीय महासचिव",
+    description: "संगठन के संचालन और रणनीतिक विस्तार के प्रमुख। देश भर में संगठन के कार्यकर्ताओं को जोड़ने में अग्रणी भूमिका।",
+    photo: memberAlok,
+    icon: <BookOpen size={18} />,
+  },
+];
+
+const About = () => {
+  return (
+    <div className="min-h-screen bg-background">
+      <TopBanner />
+      <Navbar />
+
+      {/* HERO BANNER */}
+      <div className="banner-gradient relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="float-animation absolute top-12 left-[8%] text-4xl md:text-6xl opacity-10">🌾</div>
+          <div className="float-animation absolute top-20 right-[12%] text-3xl md:text-5xl opacity-8" style={{ animationDelay: "1.5s" }}>🌻</div>
+          <div className="float-animation absolute bottom-6 left-[20%] text-2xl md:text-4xl opacity-8" style={{ animationDelay: "3s" }}>🌿</div>
+          <div className="float-animation absolute bottom-10 right-[6%] text-3xl md:text-5xl opacity-10" style={{ animationDelay: "2s" }}>🌱</div>
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 mb-5 rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm border border-white/20 hover:bg-white/25 transition-colors"
+            >
+              <ArrowLeft size={14} />
+              मुख्य पृष्ठ
+            </Link>
+          </motion.div>
+
+          <motion.h1 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp}
+            className="text-hindi text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg"
+          >
+            हमारे बारे में
+          </motion.h1>
+
+          <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp}
+            className="text-hindi text-base md:text-lg text-white/85 max-w-2xl mx-auto leading-relaxed"
+          >
+            भारतीय किसान एसोसिएशन — किसानों की आवाज़, किसानों का संगठन
+          </motion.p>
+
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} variants={fadeUp}
+            className="mt-6 flex items-center justify-center gap-3"
+          >
+            <span className="h-px w-12 bg-white/30" />
+            <span className="text-xl">🌾</span>
+            <span className="h-px w-12 bg-white/30" />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ORG INTRODUCTION */}
+      <section className="bg-cream px-4 py-14 md:px-8 md:py-20">
+        <div className="mx-auto max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+            className="relative rounded-2xl bg-white p-6 md:p-10 shadow-xl border border-forest/10"
+          >
+            <div className="absolute top-0 left-0 right-0 h-1.5 rounded-t-2xl gradient-forest" />
+            <div className="flex items-start gap-3 mb-5">
+              <div className="flex-shrink-0 rounded-xl gradient-saffron p-2.5">
+                <Heart className="text-white" size={24} />
+              </div>
+              <h2 className="text-hindi text-xl md:text-3xl font-bold text-primary">
+                संगठन का परिचय
+              </h2>
+            </div>
+
+            <div className="space-y-4 text-hindi text-sm md:text-base text-foreground/80 leading-relaxed">
+              <p>
+                भारतीय किसान एसोसिएशन एक राष्ट्रीय यादी लघु किसानों का संगठन है।
+                इसकी स्थापना{" "}
+                <span className="font-bold text-forest">श्री अमित राज यदुवंशी</span>{" "}
+                ने लेट{" "}
+                <span className="font-bold text-forest">चौधरी महेंद्र सिंह तिकैत</span>{" "}
+                के विचारों को ध्यान में रखते हुए कराई गई है।
+              </p>
+              <p>
+                इसका एम किसानों के एकजुट करना है और उनकी समस्याओं को छोटे से
+                लेकर बड़े स्तर तक हल करना है। आज भारतीय किसान एसोसिएशन एक ऐसे
+                राष्ट्रवादी और ईमानदार संगठन के लिए पूरे देश में जाने जाते हैं,
+                जो किसानों के खेत में छोटे छोटे मुद्दों पर बड़ी मांगों को पूरा
+                करने में सक्षम रहा है।
+              </p>
+              <p>
+                संगठन की एकता और अखंडता, ईमानदारी और वफादारी पूरे देश के सामने
+                है। संगठन का हर कार्यकर्ता एक बहुत ही ईमानदार और मेहनती कार्यकर्ता
+                के रूप में अपनी पहचान साबित करता है।
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* MISSION & VISION */}
+      <section className="px-4 py-14 md:px-8 md:py-20 bg-muted">
+        <div className="mx-auto max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+            className="text-center mb-10"
+          >
+            <h2 className="text-hindi text-2xl md:text-4xl font-extrabold text-primary mb-2">
+              हमारा मिशन और दृष्टि
+            </h2>
+            <div className="mx-auto flex items-center justify-center gap-2">
+              <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
+              <span className="h-1 w-16 rounded-full gradient-saffron" />
+              <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
+            </div>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Mission */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideLeft}
+              className="group rounded-2xl overflow-hidden"
+            >
+              <div className="glass-card-dark p-6 md:p-8 h-full transition-transform duration-300 group-hover:scale-[1.01]">
+                <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-saffron/20 p-2.5 ring-2 ring-saffron/30">
+                  <Target className="text-saffron" size={26} />
+                </div>
+                <h3 className="text-hindi text-xl md:text-2xl font-bold text-white mb-3">
+                  🎯 हमारा मिशन
+                </h3>
+                <div className="h-1 w-12 rounded-full bg-gradient-to-r from-saffron to-saffron-light mb-4" />
+                <p className="text-hindi text-sm md:text-base text-white/85 leading-relaxed">
+                  वर्तमान में भारतीय किसान एसोसिएशन की प्रस्तावना में सबसे बड़ी
+                  और प्राथमिक मांग यह है कि देश में{" "}
+                  <span className="font-bold text-saffron-light">किसान आयोग का गठन</span>{" "}
+                  किया जाना चाहिए। साथ ही देश के किसानों को ऐसी नीति के तहत
+                  कर्ज़ मुक्त किया जाना चाहिए, ताकि वे कर्ज़ के जाल में न फँसे।
+                  इसमें किसान आयोग महत्वपूर्ण भूमिका निभाएगा।
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Vision */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideRight}
+              className="group rounded-2xl overflow-hidden"
+            >
+              <div className="glass-card-dark p-6 md:p-8 h-full transition-transform duration-300 group-hover:scale-[1.01]">
+                <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-saffron/20 p-2.5 ring-2 ring-saffron/30">
+                  <Eye className="text-saffron" size={26} />
+                </div>
+                <h3 className="text-hindi text-xl md:text-2xl font-bold text-white mb-3">
+                  👁️ हमारी दृष्टि
+                </h3>
+                <div className="h-1 w-12 rounded-full bg-gradient-to-r from-saffron to-saffron-light mb-4" />
+                <div className="space-y-3 text-hindi text-sm md:text-base text-white/85 leading-relaxed">
+                  <p>
+                    न्यूनतम वार्षिक आय से कम आय वाले पत्रकार को{" "}
+                    <span className="font-bold text-saffron-light">₹5000 प्रतिमाह भत्ता</span>{" "}
+                    दिया जाना चाहिए क्योंकि वह एक मजदूर और किसान का बेटा है।
+                  </p>
+                  <p>
+                    सभी किसान और मजदूर जिनकी वार्षिक आय न्यूनतम से कम है, उन्हें{" "}
+                    <span className="font-bold text-saffron-light">₹5000 प्रतिमाह भत्ता</span>{" "}
+                    दिया जाए।
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* LEADERSHIP DETAIL */}
+      <section className="px-4 py-14 md:px-8 md:py-20 bg-cream">
+        <div className="mx-auto max-w-5xl">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}
+            className="text-center mb-10"
+          >
+            <span className="inline-flex items-center gap-1.5 mb-3 rounded-full gradient-forest px-4 py-1 text-xs font-semibold text-white">
+              <Users size={13} /> नेतृत्व
+            </span>
+            <h2 className="text-hindi text-2xl md:text-4xl font-extrabold text-primary mb-2">
+              हमारे प्रमुख नेता
+            </h2>
+            <div className="mx-auto flex items-center justify-center gap-2">
+              <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
+              <span className="h-1 w-16 rounded-full gradient-saffron" />
+              <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
+            </div>
+          </motion.div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {leaders.map((leader, i) => (
+              <motion.div
+                key={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-30px" }}
+                custom={i}
+                variants={fadeUp}
+                className="group"
+              >
+                <div className="relative flex items-start gap-4 bg-white rounded-xl p-5 shadow-md border border-forest/10 hover:shadow-lg hover:border-saffron/20 transition-all duration-300">
+                  <div className="absolute top-0 left-0 right-0 h-0.5 gradient-saffron opacity-60 group-hover:opacity-100 transition-opacity rounded-t-xl" />
+
+                  {/* Photo */}
+                  <div className="flex-shrink-0">
+                    <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full border-2 ${i === 0 ? "border-saffron" : "border-forest/20"} overflow-hidden`}>
+                      <img src={leader.photo} alt={leader.nameEn} className="w-full h-full object-cover object-top" />
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] md:text-xs font-bold text-white ${i === 0 ? "gradient-saffron" : "gradient-forest"}`}>
+                        {leader.icon}
+                        {leader.position}
+                      </span>
+                    </div>
+                    <h4 className="text-hindi text-sm md:text-base font-bold text-primary">
+                      {leader.name}
+                    </h4>
+                    <p className="text-[11px] text-muted-foreground font-medium">
+                      {leader.nameEn}
+                    </p>
+                    <p className="text-hindi text-xs md:text-sm text-muted-foreground mt-1 leading-relaxed">
+                      {leader.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="gradient-forest px-4 py-10 md:py-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
+            <Sprout className="mx-auto mb-3 text-saffron" size={36} />
+            <h2 className="text-hindi text-xl md:text-3xl font-bold text-white mb-3">
+              किसानों के आंदोलन में शामिल हों
+            </h2>
+            <p className="text-hindi text-sm md:text-base text-white/75 mb-6 max-w-lg mx-auto">
+              भारतीय किसान एसोसिएशन के साथ जुड़ें और किसानों की आवाज़ को मजबूत बनाएं
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link to="/#membership" className="btn-saffron !text-sm !px-6 !py-3">
+                🤝 सदस्य बनें
+              </Link>
+              <Link to="/#donation" className="btn-forest !text-sm !px-6 !py-3 !bg-white/10 hover:!bg-white/20 border border-white/20">
+                💚 सहयोग करें
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <FooterSection />
+    </div>
+  );
+};
+
+export default About;
