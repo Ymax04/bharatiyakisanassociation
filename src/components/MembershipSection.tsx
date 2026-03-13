@@ -40,182 +40,196 @@ const MembershipSection = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setProcessing(true);
-    setTimeout(() => {
-      const id = `BKA-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-      setMember({
-        name: name.trim(),
-        aadhar: aadhar.replace(/\s/g, ""),
-        phone,
-        bkaId: id,
-        timestamp: new Date().toLocaleString("en-IN", { dateStyle: "full", timeStyle: "short" }),
+    try {
+      const response = await fetch("https://formspree.io/f/meerkbqz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ name, aadhar, phone }),
       });
+
+      if (response.ok) {
+        const id = `BKA-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+        setMember({
+          name: name.trim(),
+          aadhar: aadhar.replace(/\s/g, ""),
+          phone,
+          bkaId: id,
+          timestamp: new Date().toLocaleString("en-IN", { dateStyle: "full", timeStyle: "short" }),
+        });
+      } else {
+        alert("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      alert("Network error. Check your connection.");
+    } finally {
       setProcessing(false);
-    }, 2500);
+    }
   };
+};
 
-  const downloadPDF = async () => {
-    if (!receiptRef.current) return;
-    const canvas = await html2canvas(receiptRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a5");
-    const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height * w) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, w, h);
-    pdf.save(`BKA-Membership-${member?.bkaId}.pdf`);
-  };
+const downloadPDF = async () => {
+  if (!receiptRef.current) return;
+  const canvas = await html2canvas(receiptRef.current, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF("p", "mm", "a5");
+  const w = pdf.internal.pageSize.getWidth();
+  const h = (canvas.height * w) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, w, h);
+  pdf.save(`BKA-Membership-${member?.bkaId}.pdf`);
+};
 
-  const maskedAadhar = (a: string) => `XXXX-XXXX-${a.slice(-4)}`;
+const maskedAadhar = (a: string) => `XXXX-XXXX-${a.slice(-4)}`;
 
-  return (
-    <section id="membership" className="section-padding bg-background">
-      <div className="mx-auto max-w-3xl">
-        <ScrollReveal direction="right">
-          <h2 className="mb-2 text-center text-3xl font-extrabold text-primary md:text-5xl">
-            ✊ Join the Movement
-          </h2>
-          <p className="mb-12 text-center text-muted-foreground">
-            Become a proud member of Bharatiya Kisan Association
-          </p>
-        </ScrollReveal>
+return (
+  <section id="membership" className="section-padding bg-background">
+    <div className="mx-auto max-w-3xl">
+      <ScrollReveal direction="right">
+        <h2 className="mb-2 text-center text-3xl font-extrabold text-primary md:text-5xl">
+          ✊ Join the Movement
+        </h2>
+        <p className="mb-12 text-center text-muted-foreground">
+          Become a proud member of Bharatiya Kisan Association
+        </p>
+      </ScrollReveal>
 
-        <AnimatePresence mode="wait">
-          {!member ? (
-            <motion.form
-              key="form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              onSubmit={handleSubmit}
-              className="glass-card-dark mx-auto max-w-lg space-y-6 p-8"
+      <AnimatePresence mode="wait">
+        {!member ? (
+          <motion.form
+            key="form"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            onSubmit={handleSubmit}
+            className="glass-card-dark mx-auto max-w-lg space-y-6 p-8"
+          >
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-primary-foreground">Full Name / पूरा नाम</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
+                placeholder="e.g. Ramesh Kumar"
+                maxLength={100}
+              />
+              {errors.name && <p className="mt-1 text-sm text-destructive">{errors.name}</p>}
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-primary-foreground">Aadhar Number / आधार नंबर</label>
+              <input
+                type="text"
+                value={aadhar}
+                onChange={(e) => setAadhar(e.target.value.replace(/[^\d\s]/g, "").slice(0, 14))}
+                className="w-full rounded-lg border border-input bg-background px-4 py-3 font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
+                placeholder="XXXX XXXX XXXX"
+                maxLength={14}
+              />
+              {errors.aadhar && <p className="mt-1 text-sm text-destructive">{errors.aadhar}</p>}
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-primary-foreground">Phone Number / फ़ोन नंबर</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
+                placeholder="9876543210"
+                maxLength={10}
+              />
+              {errors.phone && <p className="mt-1 text-sm text-destructive">{errors.phone}</p>}
+            </div>
+
+            <motion.button
+              type="submit"
+              disabled={processing}
+              className="btn-saffron w-full disabled:opacity-60"
+              whileTap={{ scale: 0.97 }}
             >
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-primary-foreground">Full Name / पूरा नाम</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
-                  placeholder="e.g. Ramesh Kumar"
-                  maxLength={100}
-                />
-                {errors.name && <p className="mt-1 text-sm text-destructive">{errors.name}</p>}
+              {processing ? (
+                <span className="flex items-center justify-center gap-2">
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    className="inline-block h-5 w-5 rounded-full border-2 border-t-transparent border-primary-foreground"
+                  />
+                  Processing...
+                </span>
+              ) : (
+                "Submit & Get Parchii 📄"
+              )}
+            </motion.button>
+          </motion.form>
+        ) : (
+          <motion.div
+            key="receipt"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mx-auto max-w-lg"
+          >
+            <div ref={receiptRef} className="receipt-card">
+              <div className="mb-6 border-b-2 border-primary/20 pb-4 text-center">
+                <h3 className="text-hindi text-2xl font-bold text-primary">भारतीय किसान संघ</h3>
+                <p className="text-sm font-semibold text-primary">BHARATIYA KISAN ASSOCIATION</p>
+                <p className="mt-1 text-xs text-muted-foreground">Digital Membership Receipt / डिजिटल सदस्यता रसीद</p>
               </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-primary-foreground">Aadhar Number / आधार नंबर</label>
-                <input
-                  type="text"
-                  value={aadhar}
-                  onChange={(e) => setAadhar(e.target.value.replace(/[^\d\s]/g, "").slice(0, 14))}
-                  className="w-full rounded-lg border border-input bg-background px-4 py-3 font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
-                  placeholder="XXXX XXXX XXXX"
-                  maxLength={14}
-                />
-                {errors.aadhar && <p className="mt-1 text-sm text-destructive">{errors.aadhar}</p>}
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-primary-foreground">Phone Number / फ़ोन नंबर</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
-                  placeholder="9876543210"
-                  maxLength={10}
-                />
-                {errors.phone && <p className="mt-1 text-sm text-destructive">{errors.phone}</p>}
-              </div>
-
-              <motion.button
-                type="submit"
-                disabled={processing}
-                className="btn-saffron w-full disabled:opacity-60"
-                whileTap={{ scale: 0.97 }}
-              >
-                {processing ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                      className="inline-block h-5 w-5 rounded-full border-2 border-t-transparent border-primary-foreground"
-                    />
-                    Processing...
-                  </span>
-                ) : (
-                  "Submit & Get Parchii 📄"
-                )}
-              </motion.button>
-            </motion.form>
-          ) : (
-            <motion.div
-              key="receipt"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mx-auto max-w-lg"
-            >
-              <div ref={receiptRef} className="receipt-card">
-                <div className="mb-6 border-b-2 border-primary/20 pb-4 text-center">
-                  <h3 className="text-hindi text-2xl font-bold text-primary">भारतीय किसान संघ</h3>
-                  <p className="text-sm font-semibold text-primary">BHARATIYA KISAN ASSOCIATION</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Digital Membership Receipt / डिजिटल सदस्यता रसीद</p>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between border-b border-dashed border-border pb-2">
+                  <span className="font-semibold text-muted-foreground">BKA ID:</span>
+                  <span className="font-bold text-primary">{member.bkaId}</span>
                 </div>
-
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between border-b border-dashed border-border pb-2">
-                    <span className="font-semibold text-muted-foreground">BKA ID:</span>
-                    <span className="font-bold text-primary">{member.bkaId}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-dashed border-border pb-2">
-                    <span className="font-semibold text-muted-foreground">Name / नाम:</span>
-                    <span className="font-bold text-foreground">{member.name}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-dashed border-border pb-2">
-                    <span className="font-semibold text-muted-foreground">Aadhar:</span>
-                    <span className="font-mono text-foreground">{maskedAadhar(member.aadhar)}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-dashed border-border pb-2">
-                    <span className="font-semibold text-muted-foreground">Phone:</span>
-                    <span className="font-mono text-foreground">{member.phone}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-semibold text-muted-foreground">Date / तारीख:</span>
-                    <span className="text-foreground">{member.timestamp}</span>
-                  </div>
+                <div className="flex justify-between border-b border-dashed border-border pb-2">
+                  <span className="font-semibold text-muted-foreground">Name / नाम:</span>
+                  <span className="font-bold text-foreground">{member.name}</span>
                 </div>
-
-                <div className="mt-6 rounded-md bg-primary/5 p-3 text-center">
-                  <p className="text-hindi text-sm font-semibold text-primary">
-                    "जय किसान — जय हिंद" 🇮🇳
-                  </p>
+                <div className="flex justify-between border-b border-dashed border-border pb-2">
+                  <span className="font-semibold text-muted-foreground">Aadhar:</span>
+                  <span className="font-mono text-foreground">{maskedAadhar(member.aadhar)}</span>
+                </div>
+                <div className="flex justify-between border-b border-dashed border-border pb-2">
+                  <span className="font-semibold text-muted-foreground">Phone:</span>
+                  <span className="font-mono text-foreground">{member.phone}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-muted-foreground">Date / तारीख:</span>
+                  <span className="text-foreground">{member.timestamp}</span>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <button onClick={downloadPDF} className="btn-forest flex-1">
-                  📥 Download PDF
-                </button>
-                <button onClick={() => window.print()} className="btn-saffron flex-1">
-                  🖨️ Print
-                </button>
+              <div className="mt-6 rounded-md bg-primary/5 p-3 text-center">
+                <p className="text-hindi text-sm font-semibold text-primary">
+                  "जय किसान — जय हिंद" 🇮🇳
+                </p>
               </div>
-              <button
-                onClick={() => { setMember(null); setName(""); setAadhar(""); setPhone(""); }}
-                className="mt-4 w-full text-center text-sm text-muted-foreground underline hover:text-primary"
-              >
-                Register another member
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button onClick={downloadPDF} className="btn-forest flex-1">
+                📥 Download PDF
               </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
-  );
+              <button onClick={() => window.print()} className="btn-saffron flex-1">
+                🖨️ Print
+              </button>
+            </div>
+            <button
+              onClick={() => { setMember(null); setName(""); setAadhar(""); setPhone(""); }}
+              className="mt-4 w-full text-center text-sm text-muted-foreground underline hover:text-primary"
+            >
+              Register another member
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  </section>
+);
 };
 
 export default MembershipSection;
