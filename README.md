@@ -1,73 +1,30 @@
-# Welcome to your Lovable project
+# Bharatiya Kisan Association - Web Platform
 
-## Project info
+The official digital platform for the **Bharatiya Kisan Association**, designed to manage memberships, showcase field activities, and facilitate community support.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Features
 
-## How can I edit this code?
+* **Membership Management:** Integrated digital membership form with automated receipt generation.
+* **Activity Gallery:** Dynamic showcase of field events and association milestones.
+* **Donation System:** Secure UPI-integrated donation module for community funding.
+* **Fully Responsive:** Optimized for mobile, tablet, and desktop views to reach farmers everywhere.
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+* **Frontend:** React.js with TypeScript
+* **Styling:** Tailwind CSS & Shadcn/UI
+* **Build Tool:** Vite
+* **Deployment:** Vercel
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 📁 Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+* `/src/assets` - Project images and brand assets.
+* `/src/components` - Reusable UI components (Form, Gallery, Hero).
+* `/src/pages` - Main page layouts.
+* `/public` - Static files and favicon.
 
-**Use your preferred IDE**
+## 🏗️ Local Development
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. **Install dependencies:**
+   ```bash
+   npm install
