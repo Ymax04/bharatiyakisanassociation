@@ -5,11 +5,11 @@ import { Link, useLocation } from "react-router-dom";
 import bkaLogo from "@/assets/bka-logo.jpg";
 
 const links = [
-  { label: "Home", href: "/", isRoute: true },
-  { label: "About", href: "/about", isRoute: true },
-  { label: "Gallery", href: "/#gallery", isRoute: false },
-  { label: "Membership", href: "/#membership", isRoute: false },
-  { label: "Donate", href: "/#donation", isRoute: false },
+  { label: "मुख्य पृष्ठ", href: "/", isRoute: true },
+  { label: "हमारे बारे में", href: "/about", isRoute: true },
+  { label: "गैलरी", href: "/#gallery", isRoute: false },
+  { label: "सदस्यता", href: "/#membership", isRoute: false },
+  { label: "सहयोग करें", href: "/#donation", isRoute: false },
 ];
 
 const Navbar = () => {
@@ -59,9 +59,9 @@ const Navbar = () => {
     <nav className="sticky top-0 z-40 w-full bg-forest/95 backdrop-blur-md border-b border-white/10 shadow-lg px-4 py-2.5 md:px-8">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <img src={bkaLogo} alt="BKA Logo" className="h-9 w-9 md:h-10 md:w-10 rounded-full object-cover border border-saffron/30" />
-          <span className="hidden text-sm font-bold text-primary-foreground/90 sm:inline">
-            Bharatiya Kisan Association
+          <img src={bkaLogo} alt="BKA Logo" className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border border-saffron/30" />
+          <span className="text-[13px] sm:text-sm font-bold text-primary-foreground/90 text-hindi">
+            भारतीय किसान एसोसिएशन
           </span>
         </Link>
 
@@ -70,13 +70,13 @@ const Navbar = () => {
           {links.map((l) =>
             renderLink(
               l,
-              "text-sm font-medium text-primary-foreground/80 transition-colors hover:text-saffron"
+              "text-hindi text-sm font-bold text-primary-foreground/80 transition-colors hover:text-saffron"
             )
           )}
         </div>
 
-        <Link to="/#membership" className="hidden btn-saffron !px-5 !py-2 !text-sm md:inline-flex">
-          Join Now
+        <Link to="/#membership" className="hidden btn-saffron !px-5 !py-2 !text-sm md:inline-flex text-hindi font-bold">
+          सदस्यता लें
         </Link>
 
         {/* Mobile toggle */}
@@ -101,15 +101,15 @@ const Navbar = () => {
               {links.map((l) =>
                 renderLink(
                   l,
-                  "text-primary-foreground/80 transition-colors hover:text-saffron"
+                  "text-hindi font-bold text-primary-foreground/80 transition-colors hover:text-saffron"
                 )
               )}
               <Link
                 to="/#membership"
                 onClick={() => setOpen(false)}
-                className="btn-saffron !py-2 text-center"
+                className="btn-saffron !py-2 text-center text-hindi font-bold"
               >
-                Join Now
+                सदस्यता लें
               </Link>
             </div>
           </motion.div>
