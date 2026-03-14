@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -183,5 +183,90 @@
   @keyframes floatUpDown {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-15px); }
+  }
+
+  /* ═══ NEW: Banner Redesign Utilities ═══ */
+
+  .text-heading-hindi {
+    font-family: 'Noto Sans Devanagari', 'Tiro Devanagari Hindi', sans-serif;
+    font-weight: 900;
+  }
+
+  .tricolor-bar {
+    height: 5px;
+    background: linear-gradient(
+      90deg,
+      #FF9933 0%, #FF9933 33%,
+      #FFFFFF 33%, #FFFFFF 66%,
+      #138808 66%, #138808 100%
+    );
+  }
+
+  .glow-saffron {
+    text-shadow:
+      0 2px 8px rgba(255, 153, 0, 0.25),
+      0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 140, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0.55) 40%,
+      rgba(10, 50, 20, 0.75) 100%
+    );
+  }
+
+  .btn-glow-saffron {
+    @apply inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300;
+    background: linear-gradient(135deg, #FF9933, #FFB347);
+    color: white;
+    box-shadow: 0 4px 25px rgba(255, 153, 51, 0.5);
+    animation: btnSaffronGlow 2s ease-in-out infinite;
+  }
+  .btn-glow-saffron:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 40px rgba(255, 153, 51, 0.7);
+  }
+
+  .btn-glow-forest {
+    @apply inline-flex items-center justify-center rounded-lg font-bold transition-all duration-300;
+    background: linear-gradient(135deg, #1a5c2a, #2d8a4e);
+    color: white;
+    box-shadow: 0 4px 25px rgba(26, 92, 42, 0.5);
+    animation: btnForestGlow 2s ease-in-out infinite 0.5s;
+  }
+  .btn-glow-forest:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 40px rgba(26, 92, 42, 0.7);
+  }
+
+  @keyframes btnSaffronGlow {
+    0%, 100% { box-shadow: 0 4px 25px rgba(255, 153, 51, 0.5); }
+    50% { box-shadow: 0 6px 35px rgba(255, 153, 51, 0.75); }
+  }
+
+  @keyframes btnForestGlow {
+    0%, 100% { box-shadow: 0 4px 25px rgba(26, 92, 42, 0.5); }
+    50% { box-shadow: 0 6px 35px rgba(26, 92, 42, 0.75); }
+  }
+
+  .scroll-bounce {
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(10px); opacity: 0.5; }
+  }
+
+  .banner-shimmer {
+    background-size: 400% 400%;
+    animation: bannerShimmer 8s ease-in-out infinite;
+  }
+
+  @keyframes bannerShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 }
