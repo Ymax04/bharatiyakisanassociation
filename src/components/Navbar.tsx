@@ -66,13 +66,14 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden md:hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden md:hidden relative z-50 bg-forest backdrop-blur-md"
           >
-            <div className="flex flex-col gap-4 pb-4 pt-4">
+            <div className="flex flex-col gap-5 pb-6 pt-6 px-2">
               {links.map((l) =>
                 renderLink(
                   l,
-                  "text-hindi font-bold text-primary-foreground/80 transition-colors hover:text-saffron"
+                  "text-hindi text-lg font-bold text-primary-foreground/80 transition-colors hover:text-saffron"
                 )
               )}
               <Link

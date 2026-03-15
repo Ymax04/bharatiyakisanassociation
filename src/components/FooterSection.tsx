@@ -33,9 +33,9 @@ const FooterSection = () => {
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mb-4 inline-flex items-center gap-2 rounded-lg bg-[#25d366] px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-[#20bd5a]"
+              className="mb-4 inline-flex items-center gap-2 rounded-md border border-[#25d366]/40 bg-[#25d366]/10 px-3 py-2 text-sm font-medium text-[#25d366] transition-all hover:bg-[#25d366]/20"
             >
-              <MessageCircle size={20} />
+              <MessageCircle size={16} />
               WhatsApp: 9634232102
             </a>
             <div className="flex gap-4">

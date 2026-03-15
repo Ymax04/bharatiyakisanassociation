@@ -13,7 +13,7 @@ const slogans = [
 
 const TopBanner = () => {
   return (
-    <div className="relative z-50 select-none">
+    <div className="relative z-30 select-none">
       {/* ══ Tricolor bar (saffron-white-green) ══ */}
       <div className="tricolor-bar" />
 
