@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend,
 } from "chart.js";
@@ -229,6 +230,7 @@ function MemberDetailModal({ member, onClose }: { member: Member; onClose: () =>
 }
 
 export default function AdminDashboard({ view }: { view: "dashboard" | "members" }) {
+  const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [search, setSearch] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("All");
@@ -271,6 +273,11 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
     const newValue = !member[field];
     setMembers((prev) => prev.map((m, i) => (i === idx ? { ...m, [field]: newValue } : m)));
     try {
+      const token = localStorage.getItem("adminSession");
+      if (!token) {
+        navigate("/admin-login");
+        return;
+      }
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=UTF-8" },
@@ -278,7 +285,8 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
           action: "update",
           memberId: member.memberId,
           field: field === "whatsappJoined" ? "whatsapp" : "fee",
-          value: newValue
+          value: newValue,
+          token
         })
       });
       const result = await response.text();
@@ -310,10 +318,15 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
 
   const handleDelete = async (memberId: string) => {
     try {
+      const token = localStorage.getItem("adminSession");
+      if (!token) {
+        navigate("/admin-login");
+        return;
+      }
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: JSON.stringify({ action: "delete", memberId })
+        body: JSON.stringify({ action: "delete", memberId, token })
       });
       const result = await response.text();
       if (result.trim() === "Deleted") {
@@ -346,7 +359,16 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
       const m = members.find((x) => x.memberId === id);
       if (!m || m.whatsappJoined) continue;
       try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ action: "update", memberId: id, field: "whatsapp", value: true }) });
+        const token = localStorage.getItem("adminSession");
+        if (!token) {
+          navigate("/admin-login");
+          return;
+        }
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=UTF-8" },
+          body: JSON.stringify({ action: "update", memberId: id, field: "whatsapp", value: true, token })
+        });
         if ((await res.text()).trim() === "Updated") addLog(`Admin marked WhatsApp joined for ${id}`);
       } catch (e) { console.error(e); }
     }
@@ -360,7 +382,16 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
       const m = members.find((x) => x.memberId === id);
       if (!m || m.feePaid) continue;
       try {
-        const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ action: "update", memberId: id, field: "fee", value: true }) });
+        const token = localStorage.getItem("adminSession");
+        if (!token) {
+          navigate("/admin-login");
+          return;
+        }
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=UTF-8" },
+          body: JSON.stringify({ action: "update", memberId: id, field: "fee", value: true, token })
+        });
         if ((await res.text()).trim() === "Updated") addLog(`Admin marked fee paid for ${id}`);
       } catch (e) { console.error(e); }
     }
@@ -377,7 +408,16 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
       onConfirm: async () => {
         for (const id of ids) {
           try {
-            const res = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ action: "delete", memberId: id }) });
+            const token = localStorage.getItem("adminSession");
+            if (!token) {
+              navigate("/admin-login");
+              return;
+            }
+            const res = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=UTF-8" },
+              body: JSON.stringify({ action: "delete", memberId: id, token })
+            });
             if ((await res.text()).trim() === "Deleted") addLog(`Admin deleted member ${id}`);
           } catch (e) { console.error(e); }
         }

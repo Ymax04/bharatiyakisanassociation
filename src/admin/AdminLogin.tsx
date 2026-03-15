@@ -1,16 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "./logo.jpeg";
 import { API_URL } from "../config";
 
-interface AdminLoginProps {
-  onLogin: () => void;
-}
-
-export default function AdminLogin({ onLogin }: AdminLoginProps) {
+export default function AdminLogin() {
   const [adminId, setAdminId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,10 +16,8 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setLoading(true);
 
     try {
-      console.log("Sending login request...", { adminId, password });
       const response = await fetch(API_URL, {
         method: "POST",
-        redirect: "follow",
         body: JSON.stringify({
           action: "adminLogin",
           username: adminId,
@@ -29,27 +25,15 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
         }),
       });
 
-      console.log("Response status:", response.status);
-      const responseText = await response.text();
-      console.log("Raw response text:", responseText);
+      const result = await response.json();
 
-      let isSuccess = false;
-      try {
-        const result = JSON.parse(responseText);
-        console.log("Parsed JSON:", result);
-        isSuccess = result.success === true || result.success === "true";
-      } catch (parseError) {
-        console.log("Failed to parse JSON, falling back to text check");
-        if (responseText.trim().toLowerCase() === "true" || responseText.includes('"success":true')) {
-          isSuccess = true;
+      if (result?.success) {
+        if (result.token) {
+          localStorage.setItem("adminSession", result.token);
         }
-      }
-
-      if (isSuccess) {
-        localStorage.setItem("adminAuth", "true");
-        onLogin();
+        navigate("/admin");
       } else {
-        setError("Invalid Admin ID or Password");
+        setError("Invalid username or password");
       }
     } catch (err) {
       console.error("Login Error:", err);

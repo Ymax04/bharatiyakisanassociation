@@ -1,27 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./admin.css";
-import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import logo from "./logo.jpeg";
 
 type View = "dashboard" | "members";
 
 export default function AdminApp() {
-  const [loggedIn, setLoggedIn] = useState(() => {
-    return localStorage.getItem("adminAuth") === "true";
-  });
+  const navigate = useNavigate();
+  const [checkedSession, setCheckedSession] = useState(false);
   const [view, setView] = useState<View>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (!loggedIn) {
-    return (
-      <div className="admin-root">
-        <AdminLogin onLogin={() => {
-          setLoggedIn(true);
-          // Router handles redirect natively returning to /admin via Route logic 
-        }} />
-      </div>
-    );
+  useEffect(() => {
+    const token = localStorage.getItem("adminSession");
+    if (!token) {
+      navigate("/admin-login", { replace: true });
+    } else {
+      setCheckedSession(true);
+    }
+  }, [navigate]);
+
+  if (!checkedSession) {
+    return null;
   }
 
   const navItems: { label: string; icon: string; view?: View; logout?: boolean }[] = [
@@ -60,8 +61,8 @@ export default function AdminApp() {
                 className={`admin-sidebar-item ${item.logout ? "logout" : ""} ${item.view === view && !item.logout ? "active" : ""}`}
                 onClick={() => {
                   if (item.logout) {
-                    localStorage.removeItem("adminAuth");
-                    setLoggedIn(false);
+                    localStorage.removeItem("adminSession");
+                    navigate("/admin-login");
                   } else if (item.view) {
                     setView(item.view);
                   }

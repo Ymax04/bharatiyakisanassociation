@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import AdminApp from "./admin/AdminApp";
+import AdminLogin from "./admin/AdminLogin";
 
 import { HelmetProvider } from "react-helmet-async";
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/about" element={<About />} />
 
             {/* ADMIN PANEL (COMPLETELY SEPARATE) */}
+            <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin/*" element={<AdminApp />} />
 
             {/* FALLBACK */}

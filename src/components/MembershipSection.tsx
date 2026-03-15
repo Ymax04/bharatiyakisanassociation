@@ -121,25 +121,14 @@ const MembershipSection = () => {
         const result = await response.text();
         const trimmed = result.trim();
 
-        // Backend returns plain text: Success, PhoneExists, or error
-        if (trimmed === "Success" || trimmed === "success") {
+        // For this Apps Script, register only ever returns "Success" or "PhoneExists"
+        if (trimmed === "Success" || trimmed.toLowerCase() === "success") {
           success = true;
-        } else if (trimmed === "PhoneExists") {
-          serverError = "इस फ़ोन नंबर से पहले ही रजिस्ट्रेशन हो चुका है।";
-          setPhoneDuplicateError(true);
         } else {
-          try {
-            const json = JSON.parse(trimmed);
-            const ok = json?.result === "success" || json?.status === "success" || json?.success === true || json?.message === "Success";
-            if (ok) success = true;
-            else {
-              console.error("Submission failed on server:", result);
-              serverError = (json?.message || json?.error || trimmed).slice(0, 120);
-            }
-          } catch {
-            console.error("Submission failed on server (raw):", JSON.stringify(trimmed), "status:", response.status);
-            if (trimmed) serverError = trimmed.slice(0, 120);
-          }
+          // Treat any non-success response from register as duplicate phone
+          setPhoneDuplicateError(true);
+          setSubmitError("User already registered hai is phone number se.");
+          return;
         }
 
         if (!success && response.status >= 400) {
