@@ -2,14 +2,31 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import bkaLogo from "@/assets/bka-logo.jpg";
+import { API_URL } from "@/config";
 
 interface MemberData {
   name: string;
-  aadhar: string;
+  district: string;
+  address: string;
   phone: string;
   bkaId: string;
   timestamp: string;
 }
+
+const UP_DISTRICTS = [
+  "Agra", "Aligarh", "Ambedkar Nagar", "Amethi", "Amroha", "Auraiya", "Ayodhya",
+  "Azamgarh", "Baghpat", "Bahraich", "Ballia", "Balrampur", "Banda", "Barabanki",
+  "Bareilly", "Basti", "Bhadohi", "Bijnor", "Budaun", "Bulandshahr", "Chandauli",
+  "Chitrakoot", "Deoria", "Etah", "Etawah", "Farrukhabad", "Fatehpur", "Firozabad",
+  "Gautam Buddha Nagar", "Ghaziabad", "Ghazipur", "Gonda", "Gorakhpur", "Hamirpur",
+  "Hapur", "Hardoi", "Hathras", "Jalaun", "Jaunpur", "Jhansi", "Kannauj", "Kanpur Dehat",
+  "Kanpur Nagar", "Kasganj", "Kaushambi", "Kheri", "Kushinagar", "Lalitpur", "Lucknow",
+  "Maharajganj", "Mahoba", "Mainpuri", "Mathura", "Mau", "Meerut", "Mirzapur",
+  "Moradabad", "Muzaffarnagar", "Pilibhit", "Pratapgarh", "Prayagraj", "Raebareli",
+  "Rampur", "Saharanpur", "Sambhal", "Sant Kabir Nagar", "Shahjahanpur", "Shamli",
+  "Shravasti", "Siddharthnagar", "Sitapur", "Sonbhadra", "Sultanpur", "Unnao", "Varanasi"
+];
 
 const ScrollReveal = ({ children, direction = "right" }: { children: React.ReactNode; direction?: "left" | "right" }) => (
   <motion.div
@@ -24,17 +41,22 @@ const ScrollReveal = ({ children, direction = "right" }: { children: React.React
 
 const MembershipSection = () => {
   const [name, setName] = useState("");
-  const [aadhar, setAadhar] = useState("");
+  const [district, setDistrict] = useState("");
+  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState(""); // Honeypot
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState(""); // General submission errors
+  const [phoneDuplicateError, setPhoneDuplicateError] = useState(false); // true when backend returns PhoneExists
   const [processing, setProcessing] = useState(false);
   const [member, setMember] = useState<MemberData | null>(null);
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = "Name is required";
-    if (!/^\d{12}$/.test(aadhar.replace(/\s/g, ""))) errs.aadhar = "Valid 12-digit Aadhar required";
+    if (!name.trim() || name.trim().length < 3) errs.name = "Name required (min 3 chars)";
+    if (!district) errs.district = "District is required";
+    if (!address.trim() || address.trim().length < 10) errs.address = "Address required (min 10 chars)";
     if (!/^\d{10}$/.test(phone)) errs.phone = "Valid 10-digit phone required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -42,30 +64,107 @@ const MembershipSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
+    setPhoneDuplicateError(false);
+
+    // Honeypot: if browser auto-filled the hidden field, clear it and continue (don't block real users).
+    if (company !== "") {
+      setCompany("");
+    }
+
     if (!validate()) return;
+
+    // 2. Rate Limiting check (60 seconds)
+    const lastSubmit = localStorage.getItem("lastSubmitTime");
+    const now = Date.now();
+    if (lastSubmit && now - parseInt(lastSubmit) < 60000) {
+      setSubmitError(`Please wait ${Math.ceil((60000 - (now - parseInt(lastSubmit))) / 1000)} seconds before submitting again to prevent spam.`);
+      return;
+    }
+    localStorage.setItem("lastSubmitTime", now.toString());
 
     setProcessing(true);
     try {
-      const response = await fetch("https://formspree.io/f/meerkbqz", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ name, aadhar, phone }),
-      });
+      // 3. Generate Unique Member ID: BKA-XXXXXXXX
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let idStr = "";
+      for (let i = 0; i < 8; i++) {
+        idStr += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      const memberId = `BKA-${idStr}`;
 
-      if (response.ok) {
-        const id = `BKA-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+      // 4. Send to Apps Script
+      let success = false;
+      let serverError = "";
+
+      try {
+        const payload = {
+          action: "register",
+          memberId: memberId,
+          name: name.trim(),
+          district: district,
+          address: address.trim(),
+          phone: phone,
+          company: "" // Always send empty; honeypot is frontend-only so real users aren't blocked.
+        };
+
+        // Use text/plain to avoid CORS preflight (OPTIONS); Google Apps Script returns 405 for OPTIONS.
+        // Backend must read e.postData.contents and JSON.parse() the body.
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=UTF-8"
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.text();
+        const trimmed = result.trim();
+
+        // Backend returns plain text: Success, PhoneExists, or error
+        if (trimmed === "Success" || trimmed === "success") {
+          success = true;
+        } else if (trimmed === "PhoneExists") {
+          serverError = "इस फ़ोन नंबर से पहले ही रजिस्ट्रेशन हो चुका है।";
+          setPhoneDuplicateError(true);
+        } else {
+          try {
+            const json = JSON.parse(trimmed);
+            const ok = json?.result === "success" || json?.status === "success" || json?.success === true || json?.message === "Success";
+            if (ok) success = true;
+            else {
+              console.error("Submission failed on server:", result);
+              serverError = (json?.message || json?.error || trimmed).slice(0, 120);
+            }
+          } catch {
+            console.error("Submission failed on server (raw):", JSON.stringify(trimmed), "status:", response.status);
+            if (trimmed) serverError = trimmed.slice(0, 120);
+          }
+        }
+
+        if (!success && response.status >= 400) {
+          serverError = serverError || `Server error (${response.status}). Please try again.`;
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+        serverError = "Network error. Check your connection and try again.";
+      }
+
+      if (success) {
         setMember({
           name: name.trim(),
-          aadhar: aadhar.replace(/\s/g, ""),
+          district,
+          address: address.trim(),
           phone,
-          bkaId: id,
-          timestamp: new Date().toLocaleString("en-IN", { dateStyle: "full", timeStyle: "short" }),
+          bkaId: memberId,
+          timestamp: new Date().toLocaleDateString("en-GB", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
         });
+        setSubmitError("");
       } else {
-        alert("Registration failed. Please try again.");
+        setSubmitError(serverError || "Registration failed on server. Please try again.");
       }
     } catch (error) {
-      alert("Network error. Check your connection.");
+      setSubmitError("Network error. Check your connection.");
     } finally {
       setProcessing(false);
     }
@@ -79,10 +178,8 @@ const MembershipSection = () => {
     const w = pdf.internal.pageSize.getWidth();
     const h = (canvas.height * w) / canvas.width;
     pdf.addImage(imgData, "PNG", 0, 0, w, h);
-    pdf.save(`BKA-Membership-${member.bkaId}.pdf`);
+    pdf.save(`BKA-Receipt-${member.bkaId}.pdf`);
   };
-
-  const maskedAadhar = (a: string) => `XXXX-XXXX-${a.slice(-4)}`;
 
   return (
     <section id="membership" className="section-padding bg-background">
@@ -104,8 +201,20 @@ const MembershipSection = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               onSubmit={handleSubmit}
+              noValidate
               className="glass-card-dark mx-auto max-w-lg space-y-6 p-8"
             >
+              {/* Honeypot Field */}
+              <input
+                type="text"
+                name="company"
+                className="honeypot-field"
+                autoComplete="off"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                tabIndex={-1}
+              />
+
               <div>
                 <label className="mb-1 block text-sm font-semibold text-primary-foreground">Full Name / पूरा नाम</label>
                 <input
@@ -116,24 +225,38 @@ const MembershipSection = () => {
                   className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
                   placeholder="e.g. Ramesh Kumar"
                   maxLength={100}
-                  required
                 />
                 {errors.name && <p className="mt-1 text-sm text-destructive">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-semibold text-primary-foreground">Aadhar Number / आधार नंबर</label>
-                <input
-                  name="aadhar"
-                  type="text"
-                  value={aadhar}
-                  onChange={(e) => setAadhar(e.target.value.replace(/[^\d\s]/g, "").slice(0, 14))}
-                  className="w-full rounded-lg border border-input bg-background px-4 py-3 font-mono text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
-                  placeholder="XXXX XXXX XXXX"
-                  maxLength={14}
+                <label className="mb-1 block text-sm font-semibold text-primary-foreground">District / जिला</label>
+                <select
+                  name="district"
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron appearance-none"
                   required
+                >
+                  <option value="" disabled>Select District</option>
+                  {UP_DISTRICTS.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+                {errors.district && <p className="mt-1 text-sm text-destructive">{errors.district}</p>}
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-primary-foreground">Address / पता</label>
+                <textarea
+                  name="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron resize-none"
+                  placeholder="Enter your full address"
+                  rows={3}
                 />
-                {errors.aadhar && <p className="mt-1 text-sm text-destructive">{errors.aadhar}</p>}
+                {errors.address && <p className="mt-1 text-sm text-destructive">{errors.address}</p>}
               </div>
 
               <div>
@@ -142,14 +265,21 @@ const MembershipSection = () => {
                   name="phone"
                   type="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="w-full rounded-lg border border-input bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron"
+                  onChange={(e) => {
+                    setPhone(e.target.value.replace(/\D/g, "").slice(0, 10));
+                    setPhoneDuplicateError(false);
+                  }}
+                  className={`w-full rounded-lg border bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-saffron ${phoneDuplicateError ? "border-destructive ring-2 ring-destructive/30" : "border-input"}`}
                   placeholder="9876543210"
-                  maxLength={10}
-                  required
                 />
                 {errors.phone && <p className="mt-1 text-sm text-destructive">{errors.phone}</p>}
               </div>
+
+              {submitError && (
+                <div className="bg-destructive/10 border border-destructive/30 p-3 rounded-lg text-center text-sm font-semibold text-destructive">
+                  {submitError}
+                </div>
+              )}
 
               <motion.button
                 type="submit"
@@ -165,28 +295,59 @@ const MembershipSection = () => {
               key="receipt"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mx-auto max-w-lg"
+              className="mx-auto max-w-[600px] w-[90%]"
             >
-              <div ref={receiptRef} className="receipt-card bg-white p-6 rounded-lg shadow-xl">
-                <div className="mb-6 border-b-2 border-primary/20 pb-4 text-center">
-                  <h3 className="text-2xl font-bold text-primary">भारतीय किसान संघ</h3>
-                  <p className="text-sm font-semibold text-primary">BHARATIYA KISAN ASSOCIATION</p>
+              <div className="mb-6 text-center">
+                <h3 className="text-xl md:text-2xl font-bold text-green-600 mb-2">Registration Successful!</h3>
+                <p className="text-sm md:text-base text-muted-foreground">Your membership receipt has been generated.<br/>Please download or print it for your records.</p>
+              </div>
+
+              <div ref={receiptRef} className="receipt-card">
+                <div className="receipt-header text-center border-b-2 border-forest/30 pb-4 mb-4">
+                  <img src={bkaLogo} alt="BKA Logo" className="receipt-logo" />
+                  <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संघ</h2>
+                  <h3 className="text-xs md:text-sm font-bold text-forest mt-1">BHARATIYA KISAN ASSOCIATION</h3>
                 </div>
 
-                <div className="space-y-3 text-sm text-black">
-                  <div className="flex justify-between"><span>BKA ID:</span><strong>{member.bkaId}</strong></div>
-                  <div className="flex justify-between"><span>Name:</span><strong>{member.name}</strong></div>
-                  <div className="flex justify-between"><span>Aadhar:</span><strong>{maskedAadhar(member.aadhar)}</strong></div>
-                  <div className="flex justify-between"><span>Phone:</span><strong>{member.phone}</strong></div>
-                  <div className="flex justify-between"><span>Date:</span><strong>{member.timestamp}</strong></div>
+                <div className="receipt-info space-y-1 text-sm md:text-base text-black">
+                  <div className="row">
+                    <span className="font-semibold text-gray-500">BKA ID</span>
+                    <strong id="receipt-id" className="text-forest font-bold">{member.bkaId}</strong>
+                  </div>
+                  <div className="row">
+                    <span className="font-semibold text-gray-500">Name</span>
+                    <strong id="receipt-name">{member.name}</strong>
+                  </div>
+                  <div className="row">
+                    <span className="font-semibold text-gray-500">District</span>
+                    <strong id="receipt-district">{member.district}</strong>
+                  </div>
+                  <div className="row">
+                    <span className="font-semibold text-gray-500">Address</span>
+                    <strong id="receipt-address" className="text-right max-w-[65%] leading-snug">{member.address}</strong>
+                  </div>
+                  <div className="row">
+                    <span className="font-semibold text-gray-500">Phone</span>
+                    <strong id="receipt-phone">{member.phone}</strong>
+                  </div>
+                  <div className="row !border-none">
+                    <span className="font-semibold text-gray-500">Date</span>
+                    <strong id="receipt-date">{member.timestamp}</strong>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <button onClick={downloadPDF} className="bg-green-700 text-white p-3 rounded-lg flex-1">📥 Download PDF</button>
-                <button onClick={() => window.print()} className="bg-orange-500 text-white p-3 rounded-lg flex-1">🖨️ Print</button>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <button onClick={downloadPDF} className="btn-download px-4 py-3 rounded-lg font-bold flex-1 text-center cursor-pointer transition-colors">
+                  📥 Download PDF
+                </button>
+                <button onClick={() => window.print()} className="btn-print px-4 py-3 rounded-lg font-bold flex-1 text-center cursor-pointer transition-colors">
+                  🖨️ Print
+                </button>
               </div>
-              <button onClick={() => setMember(null)} className="mt-4 w-full text-center text-sm underline">Register another member</button>
+              <button onClick={() => setMember(null)} className="mt-6 w-full text-center text-sm tracking-wide font-medium underline text-muted-foreground hover:text-foreground">
+                Register another member
+              </button>
             </motion.div>
           )}
         </AnimatePresence>

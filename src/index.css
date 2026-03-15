@@ -273,4 +273,73 @@
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
+
+  /* ═══ Anti-Bot Honeypot ═══ */
+  .honeypot-field {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ═══ Receipt Redesign & Print Styles ═══ */
+  .receipt-card {
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #2f5d44;
+    padding: 30px;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+
+  .receipt-info .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+  }
+  .receipt-info .row:last-child {
+    border-bottom: none;
+  }
+  .receipt-logo {
+    height: 60px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-download {
+    background: #1f7a45;
+    color: white;
+  }
+  .btn-download:hover {
+    background: #176035;
+  }
+  .btn-print {
+    background: #ff7a00;
+    color: white;
+  }
+  .btn-print:hover {
+    background: #df6e00;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    .receipt-card,
+    .receipt-card * {
+      visibility: visible;
+    }
+    .receipt-card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
+  }
 }
