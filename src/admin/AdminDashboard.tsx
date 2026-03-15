@@ -4,6 +4,7 @@ import {
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import jsPDF from "jspdf";
+import { Helmet } from "react-helmet-async";
 import { API_URL } from "../config";
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -488,6 +489,10 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
   if (view === "members") {
     return (
       <>
+        <Helmet>
+          <title>Admin Members - Bharatiya Kisan Association</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <div className="admin-main-header">
           <h2>Sadasya Suchi</h2>
           <p>Sabhi registered sadasyon ka management</p>
@@ -501,6 +506,10 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
 
   return (
     <>
+      <Helmet>
+        <title>Admin Dashboard - Bharatiya Kisan Association</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="admin-main-header">
         <h2>Dashboard</h2>
         <p>Namaste Admin, swagat hai 🙏</p>

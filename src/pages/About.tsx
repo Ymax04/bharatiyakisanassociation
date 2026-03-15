@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { Target, Eye, Heart, Sprout, ArrowLeft, Users, Crown, Shield, BookOpen, Landmark } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -67,6 +68,11 @@ const leaders = [
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>हमारे बारे में (About Us) - Bharatiya Kisan Association</title>
+        <meta name="description" content="भारतीय किसान एसोसिएशन के बारे में जानें। हमारे राष्ट्रीय अध्यक्ष अमित राज यदुवंशी, संरक्षक विनोद कुमार, और अन्य नेताओं (Indra Yadav, Alok Yadav) के दृष्टिकोण व यूपी (UP) के प्रति हमारी विशेष प्रतिबद्धता के बारे में पढ़ें।" />
+        <link rel="canonical" href="https://bharatiyakisanassociation.in/about" />
+      </Helmet>
       <Navbar />
       <div className="pt-14">
         <TopBanner />

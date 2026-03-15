@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import TopBanner from "@/components/TopBanner";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -32,6 +33,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Bharatiya Kisan Association — किसान बचेगा, तो देश बचेगा!</title>
+        <meta name="description" content="भारतीय किसान एसोसिएशन (BKA) — किसानों की आवाज़, किसानों का संगठन। राष्ट्रीय लघु किसानों का संगठन, उत्तर प्रदेश (UP) और पूरे भारत में किसानों को एकजुट करना।" />
+        <link rel="canonical" href="https://bharatiyakisanassociation.in/" />
+      </Helmet>
       <Navbar />
       <div className="pt-14">
         <TopBanner />
