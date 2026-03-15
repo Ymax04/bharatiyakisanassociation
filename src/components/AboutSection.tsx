@@ -40,8 +40,8 @@ const members = [
   },
   {
     id: 4,
-    name: "आलोक यादव",
-    nameEn: "Alok Yadav",
+    name: "आलोक चौधरी",
+    nameEn: "Alok chaudhary",
     position: "राष्ट्रीय महासचिव",
     description: "संगठन के संचालन और रणनीतिक विस्तार के प्रमुख।",
     photo: memberAlok,

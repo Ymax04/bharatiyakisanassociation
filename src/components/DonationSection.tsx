@@ -25,33 +25,10 @@ const DonationSection = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          {/* Bank Details */}
-          <ScrollReveal direction="left">
-            <div className="glass-card h-full p-8 text-primary-foreground">
-              <h3 className="mb-6 text-xl font-bold">🏦 Bank Transfer Details</h3>
-              <div className="space-y-4">
-                {[
-                  { label: "Account Name", value: "Bharatiya Kisan Association" },
-                  { label: "Account No.", value: "1234 5678 9012 3456" },
-                  { label: "IFSC Code", value: "SBIN0001234" },
-                  { label: "Branch", value: "New Delhi Main Branch" },
-                  { label: "Bank", value: "State Bank of India" },
-                ].map((item) => (
-                  <div key={item.label} className="flex flex-col rounded-lg bg-white/10 p-3">
-                    <span className="text-xs font-medium uppercase tracking-wider text-primary-foreground/60">
-                      {item.label}
-                    </span>
-                    <span className="mt-1 font-bold text-primary-foreground">{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-
+        <div className="flex justify-center">
           {/* UPI QR */}
           <ScrollReveal direction="right">
-            <div className="glass-card flex h-full flex-col items-center justify-center p-8 text-primary-foreground">
+            <div className="glass-card flex h-full w-full max-w-md flex-col items-center justify-center p-8 text-primary-foreground">
               <h3 className="mb-6 text-xl font-bold">📱 UPI / QR Payment</h3>
               <div className="mb-6 rounded-xl bg-white p-4">
                 <img
