@@ -7,13 +7,11 @@ import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import GallerySection from "@/components/GallerySection";
 import MembershipSection from "@/components/MembershipSection";
-import DonationSection from "@/components/DonationSection";
 import FooterSection from "@/components/FooterSection";
 
 const SECTION_IDS: Record<string, string> = {
   "/gallery": "gallery",
   "/membership": "membership",
-  "/donation": "donation",
 };
 
 const Index = () => {
@@ -35,8 +33,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Bharatiya Kisan Association — किसान बचेगा, तो देश बचेगा!</title>
-        <meta name="description" content="भारतीय किसान एसोसिएशन (BKA) — किसानों की आवाज़, किसानों का संगठन। राष्ट्रीय लघु किसानों का संगठन, उत्तर प्रदेश (UP) और पूरे भारत में किसानों को एकजुट करना।" />
-        <link rel="canonical" href="https://bharatiyakisanassociation.in/" />
+        <meta name="description" content="भारतीय किसान संगठन (BKA) — किसानों की आवाज़, किसानों का संगठन। राष्ट्रीय लघु किसानों का संगठन, उत्तर प्रदेश (UP) और पूरे भारत में किसानों को एकजुट करना।" />
+        <link rel="canonical" href="https://bka.org.in/" />
       </Helmet>
       <Navbar />
       <div className="pt-14">
@@ -45,7 +43,6 @@ const Index = () => {
       <AboutSection />
       <GallerySection />
       <MembershipSection />
-      <DonationSection />
       <FooterSection />
       </div>
     </div>

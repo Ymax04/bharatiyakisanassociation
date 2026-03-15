@@ -117,15 +117,21 @@ const TopBanner = () => {
               </motion.p>
 
               {/* Office Address */}
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.35 }}
-                className="text-hindi text-[8px] sm:text-[10px] md:text-xs text-white/50 mt-1 sm:mt-2 leading-relaxed max-w-[95%]"
+                className="text-hindi text-[8px] sm:text-[10px] md:text-xs text-white/80 mt-1 sm:mt-2 leading-relaxed max-w-[95%] bg-white/10 p-3 rounded-xl border border-white/20"
               >
-                राष्ट्रीय कार्यालय: आर.जे.एफ–538, नेता जी सुभाष मार्ग, राज नगर पार्ट-2, पालम कॉलोनी, दक्षिण-पश्चिम दिल्ली – 110077।
-                मुख्य कार्यालय: ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।
-              </motion.p>
+                <p className="mb-1">
+                  <span className="font-semibold text-white">राष्ट्रीय कार्यालय:</span>{" "}
+                  आर.जे.एफ–538, नेता जी सुभाष मार्ग, राज नगर पार्ट-2, पालम कॉलोनी, दक्षिण-पश्चिम दिल्ली – 110077।
+                </p>
+                <p>
+                  <span className="font-semibold text-white">मुख्य कार्यालय:</span>{" "}
+                  ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।
+                </p>
+              </motion.div>
             </div>
 
             {/* Right side BKA badge (desktop only) */}

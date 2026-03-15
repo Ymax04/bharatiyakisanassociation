@@ -50,7 +50,7 @@ export default function AdminApp() {
           <div className="admin-sidebar-logo">
             <img src={logo} alt="BKA Logo" className="admin-sidebar-logo-img" />
             <div>
-              <div style={{ fontSize: "0.9rem" }}>भारतीय किसान संघ</div>
+              <div style={{ fontSize: "0.9rem" }}>भारतीय किसान संगठन</div>
               <div style={{ fontSize: "0.625rem", opacity: 0.6, fontWeight: 400 }}>Admin Panel</div>
             </div>
           </div>

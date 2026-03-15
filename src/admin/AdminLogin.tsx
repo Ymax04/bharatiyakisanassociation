@@ -47,7 +47,7 @@ export default function AdminLogin() {
     <div className="admin-login-wrapper">
       <form className="admin-login-card" onSubmit={handleSubmit}>
         <img src={logo} alt="BKA Logo" className="admin-login-logo" />
-        <h1>भारतीय किसान संघ</h1>
+        <h1>भारतीय किसान संगठन</h1>
         <p className="admin-login-subtitle">Admin panel mein login karein</p>
         {error && <p className="admin-login-error">{error}</p>}
         <div className="admin-field">

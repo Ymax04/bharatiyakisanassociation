@@ -20,7 +20,7 @@ const FooterSection = () => {
               />
               <div>
                 <h3 className="text-hindi text-xl font-bold group-hover:text-saffron transition-colors">
-                  भारतीय किसान संघ
+                  भारतीय किसान संगठन
                 </h3>
                 <p className="text-sm font-semibold">BHARATIYA KISAN ASSOCIATION</p>
               </div>
@@ -28,9 +28,15 @@ const FooterSection = () => {
             <p className="mt-4 text-sm text-background/60">
               Fighting for the rights and welfare of Indian farmers since inception. Together we grow, together we prosper.
             </p>
-            <div className="mt-4 space-y-1 text-xs text-background/60 text-hindi">
-              <p>मुख्य कार्यालय: ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।</p>
-              <p>राष्ट्रीय कार्यालय: आर.जे.एफ–538, नेता जी सुभाष मार्ग, राज नगर पार्ट-2, पालम कॉलोनी, दक्षिण-पश्चिम दिल्ली – 110077।</p>
+            <div className="mt-4 space-y-3 text-xs text-background/80 text-hindi">
+              <div className="rounded-xl bg-background/10 p-3 border border-white/10">
+                <p className="font-semibold text-white">राष्ट्रीय कार्यालय</p>
+                <p className="text-[11px]">आर.जे.एफ–538, नेता जी सुभाष मार्ग, राज नगर पार्ट-2, पालम कॉलोनी, दक्षिण-पश्चिम दिल्ली – 110077।</p>
+              </div>
+              <div className="rounded-xl bg-background/10 p-3 border border-white/10">
+                <p className="font-semibold text-white">मुख्य कार्यालय</p>
+                <p className="text-[11px]">ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।</p>
+              </div>
             </div>
           </div>
 
@@ -39,7 +45,6 @@ const FooterSection = () => {
             <ul className="space-y-2 text-sm text-background/70">
               <li><Link to="/gallery" className="transition-colors hover:text-background">Gallery</Link></li>
               <li><Link to="/membership" className="transition-colors hover:text-background">Membership</Link></li>
-              <li><Link to="/donation" className="transition-colors hover:text-background">Donate</Link></li>
             </ul>
           </div>
 

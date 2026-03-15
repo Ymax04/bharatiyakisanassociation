@@ -10,6 +10,8 @@ import g5 from "@/assets/gallery-5.jpg";
 import g6 from "@/assets/gallery-6.jpg";
 import g7 from "@/assets/gallery-7.png";
 import g8 from "@/assets/gallery-8.png";
+import g9 from "@/assets/galary-9.jpg";
+import g10 from "@/assets/galary-10.jpg";
 
 const images = [
   { src: g1, alt: "Farmer Rally" },
@@ -20,6 +22,8 @@ const images = [
   { src: g6, alt: "Event Moment" },
    { src: g7, alt: "Farmers in Field" },
    { src: g8, alt: "Team Selfie" },
+  { src: g9, alt: "Additional Rally Photo" },
+  { src: g10, alt: "Additional Rally Photo" },
 ];
 
 const ScrollReveal = ({ children, direction = "left" }: { children: React.ReactNode; direction?: "left" | "right" }) => (

@@ -223,7 +223,7 @@ function MemberDetailModal({ member, onClose }: { member: Member; onClose: () =>
         <div ref={receiptRef} className="receipt-card">
           <div className="receipt-header text-center border-b-2 border-forest/30 pb-4 mb-4">
             <img src={bkaLogo} alt="BKA Logo" className="receipt-logo mx-auto" />
-            <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संघ</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संगठन</h2>
             <h3 className="text-xs md:text-sm font-bold text-forest mt-1">BHARATIYA KISAN ASSOCIATION</h3>
           </div>
 

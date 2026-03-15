@@ -186,9 +186,6 @@ const AboutSection = () => {
                     <Link to="/membership" className="btn-saffron !text-sm !px-5 !py-2.5 gap-1.5">
                       🤝 सदस्यता लें
                     </Link>
-                    <Link to="/donation" className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/20 transition-all">
-                      💚 हम से जुड़ें
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -302,12 +299,6 @@ const AboutSection = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link to="/membership" className="btn-saffron !text-sm !px-6 !py-3 gap-2">
                 🤝 सदस्यता लें
-              </Link>
-              <Link
-                to="/donation"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/25 px-6 py-3 text-sm font-bold text-white hover:bg-white/20 transition-all"
-              >
-                💚 हम से जुड़ें
               </Link>
             </div>
           </motion.div>

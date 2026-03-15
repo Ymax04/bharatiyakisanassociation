@@ -9,7 +9,6 @@ const links = [
   { label: "हमारे बारे में", href: "/about" },
   { label: "गैलरी", href: "/gallery" },
   { label: "सदस्यता", href: "/membership" },
-  { label: "सहयोग करें", href: "/donation" },
 ];
 
 const Navbar = () => {
@@ -32,7 +31,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <img src={bkaLogo} alt="BKA Logo" className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border border-saffron/30" />
           <span className="text-[13px] sm:text-sm font-bold text-primary-foreground/90 text-hindi">
-            भारतीय किसान एसोसिएशन
+            भारतीय किसान संगठन
           </span>
         </Link>
 

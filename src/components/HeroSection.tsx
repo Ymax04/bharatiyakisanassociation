@@ -89,12 +89,6 @@ const HeroSection = () => {
           >
             🤝 सदस्यता लें
           </Link>
-          <Link
-            to="/donation"
-            className="btn-glow-forest text-lg md:text-2xl px-10 py-4 md:px-14 md:py-5 rounded-xl"
-          >
-            💚 हम से जुड़ें
-          </Link>
         </motion.div>
       </div>
 

@@ -71,7 +71,7 @@ const About = () => {
       <Helmet>
         <title>हमारे बारे में (About Us) - Bharatiya Kisan Association</title>
         <meta name="description" content="भारतीय किसान एसोसिएशन के बारे में जानें। हमारे राष्ट्रीय अध्यक्ष अमित राज यदुवंशी, संरक्षक विनोद कुमार, और अन्य नेताओं (Indra Yadav, Alok chaudhary) के दृष्टिकोण व यूपी (UP) के प्रति हमारी विशेष प्रतिबद्धता के बारे में पढ़ें।" />
-        <link rel="canonical" href="https://bharatiyakisanassociation.in/about" />
+        <link rel="canonical" href="https://bka.org.in/about" />
       </Helmet>
       <Navbar />
       <div className="pt-14">
@@ -141,7 +141,7 @@ const About = () => {
                   इसकी स्थापना{" "}
                   <span className="font-bold text-forest">अमित राज यदुवंशी</span>{" "}
                   ने स्वर्गीय{" "}
-                  <span className="font-bold text-forest">चौधरी महेंद्र सिंह तिकैत</span>{" "}
+                  <span className="font-bold text-forest">चौधरी महेंद्र सिंह टिकैत</span>{" "}
                   के विचारों से प्रेरित होकर की है।
                 </p>
                 <p>
@@ -311,9 +311,6 @@ const About = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link to="/membership" className="btn-saffron !text-sm !px-6 !py-3">
                   🤝 सदस्य बनें
-                </Link>
-                <Link to="/donation" className="btn-forest !text-sm !px-6 !py-3 !bg-white/10 hover:!bg-white/20 border border-white/20">
-                  💚 सहयोग करें
                 </Link>
               </div>
             </motion.div>
