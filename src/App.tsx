@@ -19,8 +19,11 @@ function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* MAIN WEBSITE ROUTES */}
+            {/* MAIN WEBSITE ROUTES — sections as separate URLs */}
             <Route path="/" element={<Index />} />
+            <Route path="/gallery" element={<Index />} />
+            <Route path="/membership" element={<Index />} />
+            <Route path="/donation" element={<Index />} />
             <Route path="/about" element={<About />} />
 
             {/* ADMIN PANEL (COMPLETELY SEPARATE) */}

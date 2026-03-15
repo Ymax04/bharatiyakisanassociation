@@ -11,9 +11,9 @@ import memberAlok from "@/assets/member-alok-yadav.jpg";
 const members = [
   {
     id: 1,
-    name: "श्री विनोद कुमार",
-    nameEn: "Mr. Vinod Kumar",
-    position: "संरक्षक / उपाध्यक्ष",
+    name: "विनोद कुमार",
+    nameEn: "Vinod Kumar",
+    position: "संरक्षक",
     description:
       "संगठन के सर्वोच्च संरक्षक और राष्ट्रीय स्तर पर किसानों की आवाज़।",
     photo: memberVinod,
@@ -21,8 +21,8 @@ const members = [
   },
   {
     id: 2,
-    name: "श्री अमित राज यदुवंशी",
-    nameEn: "Mr. Amit Raj Yaduvanshi",
+    name: "अमित राज यदुवंशी",
+    nameEn: "Amit Raj Yaduvanshi",
     position: "राष्ट्रीय अध्यक्ष",
     description:
       "संगठन के संस्थापक और राष्ट्रीय अध्यक्ष। किसानों को एकजुट करने में अग्रणी।",
@@ -31,7 +31,7 @@ const members = [
   },
   {
     id: 3,
-    name: "श्रीमती इंद्रा यादव",
+    name: "इंद्रा यादव",
     nameEn: "Indra Yadav",
     position: "राष्ट्रीय कोषाध्यक्ष",
     description: "संगठन की वित्तीय पारदर्शिता और ईमानदारी के संरक्षक।",
@@ -40,7 +40,7 @@ const members = [
   },
   {
     id: 4,
-    name: "श्री आलोक यादव",
+    name: "आलोक यादव",
     nameEn: "Alok Yadav",
     position: "राष्ट्रीय महासचिव",
     description: "संगठन के संचालन और रणनीतिक विस्तार के प्रमुख।",
@@ -67,16 +67,15 @@ const AboutSection = () => {
                 भारतीय किसान एसोसिएशन
               </h2>
               <p className="text-hindi text-sm md:text-base text-white/85 leading-relaxed">
-                एक राष्ट्रीय लघु किसानों का संगठन।{" "}
+                भारतीय किसान एसोसिएशन राष्ट्रीय लघु किसानों का संगठन है। इसकी स्थापना{" "}
                 <span className="font-bold text-yellow-200">
-                  श्री अमित राज यदुवंशी
+                  अमित राज यदुवंशी
                 </span>{" "}
                 द्वारा{" "}
                 <span className="font-bold text-yellow-200">
-                  लेट चौधरी महेंद्र सिंह तिकैत
+                  स्वर्गीय चौधरी महेंद्र सिंह टिकैत
                 </span>{" "}
-                के विचारों को ध्यान में रखते हुए स्थापित। किसानों को एकजुट करना
-                और उनकी समस्याओं को हल करना ही हमारा लक्ष्य है।
+                के विचारों को ध्यान में रखते हुए की गई है। किसानों को एकजुट करना और उनकी समस्याओं का समाधान करना ही हमारा मुख्य लक्ष्य है।
               </p>
             </motion.div>
 
@@ -95,7 +94,7 @@ const AboutSection = () => {
                 />
               </Link>
               <Link
-                to="/#membership"
+                to="/membership"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 border border-white/25 px-5 py-2.5 text-sm font-bold text-white backdrop-blur-sm hover:bg-white/25 transition-all"
               >
                 <Users size={14} />
@@ -133,7 +132,7 @@ const AboutSection = () => {
               <Users size={13} /> नेतृत्व
             </span>
             <h2 className="text-hindi text-2xl md:text-4xl font-extrabold text-primary mb-2">
-              हमारे प्रमुख नेता
+              हमारे प्रमुख किसान नेता
             </h2>
             <div className="mx-auto flex items-center justify-center gap-2">
               <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
@@ -184,10 +183,10 @@ const AboutSection = () => {
                     {members[0].description}
                   </p>
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                    <Link to="/#membership" className="btn-saffron !text-sm !px-5 !py-2.5 gap-1.5">
+                    <Link to="/membership" className="btn-saffron !text-sm !px-5 !py-2.5 gap-1.5">
                       🤝 सदस्यता लें
                     </Link>
-                    <Link to="/#donation" className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/20 transition-all">
+                    <Link to="/donation" className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-5 py-2.5 text-sm font-bold text-white hover:bg-white/20 transition-all">
                       💚 हम से जुड़ें
                     </Link>
                   </div>
@@ -254,9 +253,9 @@ const AboutSection = () => {
                 <div className="relative rounded-2xl overflow-hidden bg-white shadow-lg border border-forest/10 hover:shadow-xl hover:border-saffron/20 transition-all duration-300">
                   <div className="absolute top-0 left-0 right-0 h-1 gradient-saffron opacity-60 group-hover:opacity-100 transition-opacity" />
                   <div className="flex flex-col items-center text-center p-6 md:p-8">
-                    {/* Photo — circular with proper fit */}
+                    {/* Photo — last 2 members boxy */}
                     <div className="relative mb-4">
-                      <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-[3px] border-forest/15 overflow-hidden bg-gradient-to-b from-cyan-50 to-cyan-100 group-hover:border-saffron/40 transition-colors duration-300">
+                      <div className="w-36 h-36 md:w-44 md:h-44 rounded-lg border-[3px] border-forest/15 overflow-hidden bg-gradient-to-b from-cyan-50 to-cyan-100 group-hover:border-saffron/40 transition-colors duration-300">
                         <img
                           src={member.photo}
                           alt={member.nameEn}
@@ -301,11 +300,11 @@ const AboutSection = () => {
               किसानों के आंदोलन में शामिल हों — आज ही जुड़ें!
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link to="/#membership" className="btn-saffron !text-sm !px-6 !py-3 gap-2">
+              <Link to="/membership" className="btn-saffron !text-sm !px-6 !py-3 gap-2">
                 🤝 सदस्यता लें
               </Link>
               <Link
-                to="/#donation"
+                to="/donation"
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/25 px-6 py-3 text-sm font-bold text-white hover:bg-white/20 transition-all"
               >
                 💚 हम से जुड़ें

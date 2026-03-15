@@ -155,7 +155,7 @@ const LeadershipSection = () => {
           className="text-center mb-8"
         >
           <h2 className="text-hindi text-2xl md:text-4xl font-extrabold text-primary mb-2">
-            हमारे प्रमुख नेता
+            हमारे प्रमुख किसान नेता
           </h2>
           <div className="mx-auto flex items-center justify-center gap-2 mb-2">
             <span className="h-0.5 w-8 bg-primary/30 rounded-full" />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -18,14 +19,6 @@ const HeroSection = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
-
-  const scrollToMembership = () => {
-    document.getElementById("membership")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollDown = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-  };
 
   return (
     <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
@@ -90,32 +83,36 @@ const HeroSection = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
         >
-          <button
-            onClick={scrollToMembership}
+          <Link
+            to="/membership"
             className="btn-glow-saffron text-lg md:text-2xl px-10 py-4 md:px-14 md:py-5 rounded-xl"
           >
             🤝 सदस्यता लें
-          </button>
-          <a
-            href="#donation"
+          </Link>
+          <Link
+            to="/donation"
             className="btn-glow-forest text-lg md:text-2xl px-10 py-4 md:px-14 md:py-5 rounded-xl"
           >
             💚 हम से जुड़ें
-          </a>
+          </Link>
         </motion.div>
       </div>
 
       {/* Scroll-down indicator */}
-      <motion.button
-        onClick={scrollDown}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-bounce text-white/60 hover:text-[#FF9933] transition-colors"
-        aria-label="Scroll down"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
-        <ChevronDown size={40} strokeWidth={2.5} />
-      </motion.button>
+        <Link
+          to="/gallery"
+          className="block scroll-bounce text-white/60 hover:text-[#FF9933] transition-colors"
+          aria-label="Scroll down"
+        >
+          <ChevronDown size={40} strokeWidth={2.5} />
+        </Link>
+      </motion.div>
     </section>
   );
 };

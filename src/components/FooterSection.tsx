@@ -1,4 +1,9 @@
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MessageCircle, Instagram, Youtube, Mail, Phone } from "lucide-react";
+
+const WHATSAPP_NUMBER = "919634232102";
+const INSTAGRAM_URL = "https://www.instagram.com/siddartharaazyadav/";
+const YOUTUBE_URL = "https://www.youtube.com/@bhartiyakisanassociation";
 
 const FooterSection = () => {
   return (
@@ -16,28 +21,49 @@ const FooterSection = () => {
           <div>
             <h4 className="mb-4 font-bold">Quick Links</h4>
             <ul className="space-y-2 text-sm text-background/70">
-              <li><a href="#gallery" className="transition-colors hover:text-background">Gallery</a></li>
-              <li><a href="#membership" className="transition-colors hover:text-background">Membership</a></li>
-              <li><a href="#donation" className="transition-colors hover:text-background">Donate</a></li>
+              <li><Link to="/gallery" className="transition-colors hover:text-background">Gallery</Link></li>
+              <li><Link to="/membership" className="transition-colors hover:text-background">Membership</Link></li>
+              <li><Link to="/donation" className="transition-colors hover:text-background">Donate</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="mb-4 font-bold">Connect With Us</h4>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-4 inline-flex items-center gap-2 rounded-lg bg-[#25d366] px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-[#20bd5a]"
+            >
+              <MessageCircle size={20} />
+              WhatsApp: 9634232102
+            </a>
             <div className="flex gap-4">
-              {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="rounded-full bg-background/10 p-2.5 transition-all duration-200 hover:scale-110 hover:bg-saffron"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-background/10 p-2.5 transition-all duration-200 hover:scale-110 hover:bg-saffron"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href={YOUTUBE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-background/10 p-2.5 transition-all duration-200 hover:scale-110 hover:bg-saffron"
+                aria-label="YouTube"
+              >
+                <Youtube size={18} />
+              </a>
             </div>
             <div className="mt-4 space-y-2 text-sm text-background/70">
-              <p className="flex items-center gap-2"><Phone size={14} /> +91 98765 43210</p>
-              <p className="flex items-center gap-2"><Mail size={14} /> contact@bka.org.in</p>
+              <p className="flex items-center gap-2">
+                <Phone size={14} />
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-background">+91 9634232102</a>
+              </p>
+              <p className="flex items-center gap-2"><Mail size={14} /> bhartiyakisanassociation@gmail.com</p>
             </div>
           </div>
         </div>

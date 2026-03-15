@@ -31,23 +31,23 @@ const slideRight = {
 
 const leaders = [
   {
-    name: "श्री विनोद कुमार",
-    nameEn: "Mr. Vinod Kumar",
-    position: "संरक्षक / उपाध्यक्ष",
+    name: "विनोद कुमार",
+    nameEn: "Vinod Kumar",
+    position: "संरक्षक",
     description: "संगठन के सर्वोच्च संरक्षक और राष्ट्रीय स्तर पर किसानों की आवाज़। उनकी अगुवाई में संगठन ने कई मांगों को सफलतापूर्वक पूरा किया है।",
     photo: memberVinod,
     icon: <Crown size={18} />,
   },
   {
-    name: "श्री अमित राज यदुवंशी",
-    nameEn: "Mr. Amit Raj Yaduvanshi",
+    name: "अमित राज यदुवंशी",
+    nameEn: "Amit Raj Yaduvanshi",
     position: "राष्ट्रीय अध्यक्ष",
     description: "संगठन के संस्थापक और राष्ट्रीय अध्यक्ष। किसानों को एकजुट करने और उनकी समस्याओं को हल करने में अग्रणी भूमिका।",
     photo: memberAmit,
     icon: <Shield size={18} />,
   },
   {
-    name: "श्रीमती इंद्रा यादव",
+    name: "इंद्रा यादव",
     nameEn: "Indra Yadav",
     position: "राष्ट्रीय कोषाध्यक्ष",
     description: "संगठन की वित्तीय पारदर्शिता और ईमानदारी के संरक्षक। हर पैसे का हिसाब रखने वाले।",
@@ -55,7 +55,7 @@ const leaders = [
     icon: <Landmark size={18} />,
   },
   {
-    name: "श्री आलोक यादव",
+    name: "आलोक यादव",
     nameEn: "Alok Yadav",
     position: "राष्ट्रीय महासचिव",
     description: "संगठन के संचालन और रणनीतिक विस्तार के प्रमुख। देश भर में संगठन के कार्यकर्ताओं को जोड़ने में अग्रणी भूमिका।",
@@ -67,23 +67,24 @@ const leaders = [
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
-      <TopBanner />
       <Navbar />
+      <div className="pt-14">
+        <TopBanner />
 
-      {/* HERO BANNER */}
-      <div className="banner-gradient relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+      {/* HERO BANNER — compact */}
+      <div className="banner-gradient relative pt-20 pb-8 md:pt-24 md:pb-10 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="float-animation absolute top-12 left-[8%] text-4xl md:text-6xl opacity-10">🌾</div>
-          <div className="float-animation absolute top-20 right-[12%] text-3xl md:text-5xl opacity-8" style={{ animationDelay: "1.5s" }}>🌻</div>
-          <div className="float-animation absolute bottom-6 left-[20%] text-2xl md:text-4xl opacity-8" style={{ animationDelay: "3s" }}>🌿</div>
-          <div className="float-animation absolute bottom-10 right-[6%] text-3xl md:text-5xl opacity-10" style={{ animationDelay: "2s" }}>🌱</div>
+          <div className="float-animation absolute top-8 left-[8%] text-3xl md:text-5xl opacity-10">🌾</div>
+          <div className="float-animation absolute top-12 right-[12%] text-2xl md:text-4xl opacity-8" style={{ animationDelay: "1.5s" }}>🌻</div>
+          <div className="float-animation absolute bottom-4 left-[20%] text-xl md:text-3xl opacity-8" style={{ animationDelay: "3s" }}>🌿</div>
+          <div className="float-animation absolute bottom-6 right-[6%] text-2xl md:text-4xl opacity-10" style={{ animationDelay: "2s" }}>🌱</div>
         </div>
 
         <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={0} variants={fadeUp}>
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 mb-5 rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm border border-white/20 hover:bg-white/25 transition-colors"
+              className="inline-flex items-center gap-1.5 mb-3 rounded-full bg-white/15 px-3 py-1.5 text-xs md:text-sm font-medium text-white backdrop-blur-sm border border-white/20 hover:bg-white/25 transition-colors"
             >
               <ArrowLeft size={14} />
               मुख्य पृष्ठ
@@ -91,23 +92,23 @@ const About = () => {
           </motion.div>
 
           <motion.h1 initial="hidden" whileInView="visible" viewport={{ once: true }} custom={1} variants={fadeUp}
-            className="text-hindi text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg"
+            className="text-hindi text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg"
           >
             हमारे बारे में
           </motion.h1>
 
           <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} custom={2} variants={fadeUp}
-            className="text-hindi text-base md:text-lg text-white/85 max-w-2xl mx-auto leading-relaxed"
+            className="text-hindi text-sm md:text-base text-white/85 max-w-2xl mx-auto leading-snug"
           >
             भारतीय किसान एसोसिएशन — किसानों की आवाज़, किसानों का संगठन
           </motion.p>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} custom={3} variants={fadeUp}
-            className="mt-6 flex items-center justify-center gap-3"
+            className="mt-3 flex items-center justify-center gap-2"
           >
-            <span className="h-px w-12 bg-white/30" />
-            <span className="text-xl">🌾</span>
-            <span className="h-px w-12 bg-white/30" />
+            <span className="h-px w-8 bg-white/30" />
+            <span className="text-base">🌾</span>
+            <span className="h-px w-8 bg-white/30" />
           </motion.div>
         </div>
       </div>
@@ -132,7 +133,7 @@ const About = () => {
               <p>
                 भारतीय किसान एसोसिएशन एक राष्ट्रीय स्तर का लघु एवं सीमांत किसानों का संगठन है।
                 इसकी स्थापना{" "}
-                <span className="font-bold text-forest">श्री अमित राज यदुवंशी</span>{" "}
+                <span className="font-bold text-forest">अमित राज यदुवंशी</span>{" "}
                 ने स्वर्गीय{" "}
                 <span className="font-bold text-forest">चौधरी महेंद्र सिंह तिकैत</span>{" "}
                 के विचारों से प्रेरित होकर की है।
@@ -235,7 +236,7 @@ const About = () => {
               <Users size={13} /> नेतृत्व
             </span>
             <h2 className="text-hindi text-2xl md:text-4xl font-extrabold text-primary mb-2">
-              हमारे प्रमुख नेता
+              हमारे प्रमुख किसान नेता
             </h2>
             <div className="mx-auto flex items-center justify-center gap-2">
               <span className="h-0.5 w-8 bg-primary/30 rounded-full" />
@@ -258,9 +259,9 @@ const About = () => {
                 <div className="relative flex items-start gap-4 bg-white rounded-xl p-5 shadow-md border border-forest/10 hover:shadow-lg hover:border-saffron/20 transition-all duration-300">
                   <div className="absolute top-0 left-0 right-0 h-0.5 gradient-saffron opacity-60 group-hover:opacity-100 transition-opacity rounded-t-xl" />
 
-                  {/* Photo */}
+                  {/* Photo — all boxy */}
                   <div className="flex-shrink-0">
-                    <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full border-2 ${i === 0 ? "border-saffron" : "border-forest/20"} overflow-hidden`}>
+                    <div className={`w-16 h-16 md:w-20 md:h-20 rounded-lg border-2 overflow-hidden ${i === 0 ? "border-saffron" : "border-forest/20"}`}>
                       <img src={leader.photo} alt={leader.nameEn} className="w-full h-full object-cover object-top" />
                     </div>
                   </div>
@@ -302,10 +303,10 @@ const About = () => {
               भारतीय किसान एसोसिएशन के साथ जुड़ें और किसानों की आवाज़ को मजबूत बनाएं
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link to="/#membership" className="btn-saffron !text-sm !px-6 !py-3">
+              <Link to="/membership" className="btn-saffron !text-sm !px-6 !py-3">
                 🤝 सदस्य बनें
               </Link>
-              <Link to="/#donation" className="btn-forest !text-sm !px-6 !py-3 !bg-white/10 hover:!bg-white/20 border border-white/20">
+              <Link to="/donation" className="btn-forest !text-sm !px-6 !py-3 !bg-white/10 hover:!bg-white/20 border border-white/20">
                 💚 सहयोग करें
               </Link>
             </div>
@@ -314,6 +315,7 @@ const About = () => {
       </section>
 
       <FooterSection />
+      </div>
     </div>
   );
 };

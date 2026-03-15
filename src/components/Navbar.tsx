@@ -1,62 +1,33 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import bkaLogo from "@/assets/bka-logo.jpg";
 
 const links = [
-  { label: "मुख्य पृष्ठ", href: "/", isRoute: true },
-  { label: "हमारे बारे में", href: "/about", isRoute: true },
-  { label: "गैलरी", href: "/#gallery", isRoute: false },
-  { label: "सदस्यता", href: "/#membership", isRoute: false },
-  { label: "सहयोग करें", href: "/#donation", isRoute: false },
+  { label: "मुख्य पृष्ठ", href: "/" },
+  { label: "हमारे बारे में", href: "/about" },
+  { label: "गैलरी", href: "/gallery" },
+  { label: "सदस्यता", href: "/membership" },
+  { label: "सहयोग करें", href: "/donation" },
 ];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
 
-  const handleClick = (href: string, isRoute: boolean) => {
-    setOpen(false);
-    // If it's a hash link and we're on the home page, scroll to it
-    if (!isRoute && href.startsWith("/#")) {
-      const hash = href.replace("/", "");
-      if (location.pathname === "/") {
-        const el = document.querySelector(hash);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    }
-  };
-
-  const renderLink = (l: typeof links[0], className: string) => {
-    if (l.isRoute) {
-      return (
-        <Link
-          key={l.label}
-          to={l.href}
-          onClick={() => handleClick(l.href, l.isRoute)}
-          className={className}
-        >
-          {l.label}
-        </Link>
-      );
-    }
-    return (
-      <a
-        key={l.label}
-        href={l.href}
-        onClick={() => handleClick(l.href, l.isRoute)}
-        className={className}
-      >
-        {l.label}
-      </a>
-    );
-  };
+  const renderLink = (l: (typeof links)[0], className: string) => (
+    <Link
+      key={l.label}
+      to={l.href}
+      onClick={() => setOpen(false)}
+      className={className}
+    >
+      {l.label}
+    </Link>
+  );
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-forest/95 backdrop-blur-md border-b border-white/10 shadow-lg px-4 py-2.5 md:px-8">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-forest/95 backdrop-blur-md border-b border-white/10 shadow-lg px-4 py-2.5 md:px-8">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src={bkaLogo} alt="BKA Logo" className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border border-saffron/30" />
@@ -75,7 +46,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <Link to="/#membership" className="hidden btn-saffron !px-5 !py-2 !text-sm md:inline-flex text-hindi font-bold">
+        <Link to="/membership" className="hidden btn-saffron !px-5 !py-2 !text-sm md:inline-flex text-hindi font-bold" onClick={() => setOpen(false)}>
           सदस्यता लें
         </Link>
 
@@ -105,7 +76,7 @@ const Navbar = () => {
                 )
               )}
               <Link
-                to="/#membership"
+                to="/membership"
                 onClick={() => setOpen(false)}
                 className="btn-saffron !py-2 text-center text-hindi font-bold"
               >
