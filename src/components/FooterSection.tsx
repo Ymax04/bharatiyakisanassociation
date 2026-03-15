@@ -70,7 +70,6 @@ const FooterSection = () => {
 
         <div className="mt-10 border-t border-background/10 pt-6 text-center text-xs text-background/40">
           <p>© {new Date().getFullYear()} Bharatiya Kisan Association. All rights reserved.</p>
-          <p className="mt-1">Official Domain: www.bka.org.in — Verified ✓</p>
         </div>
       </div>
     </footer>
