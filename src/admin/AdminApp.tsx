@@ -7,14 +7,19 @@ import logo from "./logo.jpeg";
 type View = "dashboard" | "members";
 
 export default function AdminApp() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(() => {
+    return localStorage.getItem("adminAuth") === "true";
+  });
   const [view, setView] = useState<View>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!loggedIn) {
     return (
       <div className="admin-root">
-        <AdminLogin onLogin={() => setLoggedIn(true)} />
+        <AdminLogin onLogin={() => {
+          setLoggedIn(true);
+          // Router handles redirect natively returning to /admin via Route logic 
+        }} />
       </div>
     );
   }
@@ -55,6 +60,7 @@ export default function AdminApp() {
                 className={`admin-sidebar-item ${item.logout ? "logout" : ""} ${item.view === view && !item.logout ? "active" : ""}`}
                 onClick={() => {
                   if (item.logout) {
+                    localStorage.removeItem("adminAuth");
                     setLoggedIn(false);
                   } else if (item.view) {
                     setView(item.view);
