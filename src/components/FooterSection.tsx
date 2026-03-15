@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MessageCircle, Instagram, Youtube, Mail, Phone } from "lucide-react";
+import bkaLogo from "@/assets/bka-logo.jpg";
 
 const WHATSAPP_NUMBER = "919634232102";
 const INSTAGRAM_URL = "https://www.instagram.com/siddartharaazyadav/";
@@ -11,11 +12,26 @@ const FooterSection = () => {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-hindi mb-2 text-2xl font-bold">भारतीय किसान संघ</h3>
-            <p className="text-sm font-semibold">BHARATIYA KISAN ASSOCIATION</p>
+            <Link to="/" className="inline-flex items-center gap-3 group">
+              <img
+                src={bkaLogo}
+                alt="BKA Logo"
+                className="h-10 w-10 rounded-full object-cover border border-background/20 group-hover:border-saffron/60 transition-colors"
+              />
+              <div>
+                <h3 className="text-hindi text-xl font-bold group-hover:text-saffron transition-colors">
+                  भारतीय किसान संघ
+                </h3>
+                <p className="text-sm font-semibold">BHARATIYA KISAN ASSOCIATION</p>
+              </div>
+            </Link>
             <p className="mt-4 text-sm text-background/60">
               Fighting for the rights and welfare of Indian farmers since inception. Together we grow, together we prosper.
             </p>
+            <div className="mt-4 space-y-1 text-xs text-background/60 text-hindi">
+              <p>मुख्य कार्यालय: ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।</p>
+              <p>राष्ट्रीय कार्यालय: आर.जे.एफ–538, नेता जी सुभाष मार्ग, राज नगर पार्ट-2, पालम कॉलोनी, दक्षिण-पश्चिम दिल्ली – 110077।</p>
+            </div>
           </div>
 
           <div>

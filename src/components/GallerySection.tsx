@@ -8,19 +8,18 @@ import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/gallery-5.jpg";
 import g6 from "@/assets/gallery-6.jpg";
+import g7 from "@/assets/gallery-7.png";
+import g8 from "@/assets/gallery-8.png";
 
 const images = [
-  { src: g1, alt: "Farmer Rally", span: "col-span-2 row-span-1" },
-  { src: g2, alt: "Leader Speech", span: "col-span-1 row-span-2" },
-  { src: g3, alt: "March for Rights", span: "col-span-1 row-span-1" },
-  { src: g4, alt: "Farmer's Hands", span: "col-span-1 row-span-1" },
-  { src: g5, alt: "Community Meeting", span: "col-span-2 row-span-1" },
-  { src: g6, alt: "Event Moment", span: "col-span-1 row-span-1" },
-  { src: g1, alt: "Rally 2", span: "col-span-1 row-span-1" },
-  { src: g3, alt: "March 2", span: "col-span-1 row-span-1" },
-  { src: g4, alt: "Hands 2", span: "col-span-1 row-span-1" },
-  { src: g2, alt: "Speech 2", span: "col-span-1 row-span-1" },
-  { src: g5, alt: "Meeting 2", span: "col-span-2 row-span-1" },
+  { src: g1, alt: "Farmer Rally" },
+  { src: g2, alt: "Leader Speech" },
+  { src: g3, alt: "March for Rights" },
+  { src: g4, alt: "Farmer's Hands" },
+  { src: g5, alt: "Community Meeting" },
+  { src: g6, alt: "Event Moment" },
+   { src: g7, alt: "Farmers in Field" },
+   { src: g8, alt: "Team Selfie" },
 ];
 
 const ScrollReveal = ({ children, direction = "left" }: { children: React.ReactNode; direction?: "left" | "right" }) => (
@@ -42,31 +41,33 @@ const GallerySection = () => {
       <div className="mx-auto max-w-7xl">
         <ScrollReveal direction="left">
           <h2 className="mb-2 text-center text-3xl font-extrabold text-primary md:text-5xl">
-            📸 From the Fields
+            📸 आंदोलन की झलकियाँ
           </h2>
-          <p className="mb-12 text-center text-muted-foreground">
-            Moments from rallies, gatherings, and the movement
+          <p className="mb-10 text-center text-muted-foreground text-sm md:text-base">
+            रैलियों, बैठकों और किसान आंदोलन के चुनिंदा पलों की फोटो गैलरी
           </p>
         </ScrollReveal>
 
-        <div className="grid auto-rows-[200px] grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[220px]">
+        {/* Responsive post-style grid */}
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {images.map((img, i) => (
-            <motion.div
+            <motion.button
               key={i}
-              className={`masonry-item ${img.span} relative`}
-              whileHover={{ scale: 1.04 }}
+              type="button"
               onClick={() => setLightbox(i)}
+              className="group relative flex flex-col overflow-hidden rounded-xl bg-background shadow-sm ring-1 ring-foreground/5 hover:ring-saffron/50 hover:shadow-md transition-all duration-200"
+              whileHover={{ y: -4 }}
             >
-              <img
-                src={img.src}
-                alt={img.alt}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100 flex items-end p-3">
-                <span className="text-sm font-medium text-primary-foreground">{img.alt}</span>
+              <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </div>

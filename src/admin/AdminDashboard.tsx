@@ -5,7 +5,9 @@ import {
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import { Helmet } from "react-helmet-async";
+import bkaLogo from "@/assets/bka-logo.jpg";
 import { API_URL } from "../config";
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -202,27 +204,76 @@ function ConfirmModalUI({ modal, onClose }: { modal: NonNullable<ConfirmModal>; 
 }
 
 function MemberDetailModal({ member, onClose }: { member: Member; onClose: () => void }) {
-  const phone = String(member.phone).replace(/\D/g, "").slice(-10);
-  const waUrl = phone.length === 10 ? `https://wa.me/91${phone}` : "#";
+  const receiptRef = useRef<HTMLDivElement | null>(null);
+
+  const downloadPDF = async () => {
+    if (!receiptRef.current) return;
+    const canvas = await html2canvas(receiptRef.current, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a5");
+    const w = pdf.internal.pageSize.getWidth();
+    const h = (canvas.height * w) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, w, h);
+    pdf.save(`BKA-Receipt-${member.memberId}.pdf`);
+  };
+
   return (
     <div className="admin-confirm-overlay" onClick={onClose}>
       <div className="admin-detail-modal" onClick={(e) => e.stopPropagation()}>
-        <h3 className="admin-detail-title">Member Detail</h3>
-        <div className="admin-detail-grid">
-          <span className="admin-detail-label">Member ID</span><span>{member.memberId}</span>
-          <span className="admin-detail-label">Name</span><span>{member.name}</span>
-          <span className="admin-detail-label">District</span><span>{member.district}</span>
-          <span className="admin-detail-label">Address</span><span>{member.address || "—"}</span>
-          <span className="admin-detail-label">Phone</span><span>{member.phone}</span>
-          <span className="admin-detail-label">Registration Date</span><span>{member.date}</span>
-          <span className="admin-detail-label">WhatsApp Joined</span><span>{member.whatsappJoined ? "Yes" : "No"}</span>
-          <span className="admin-detail-label">Fee Paid</span><span>{member.feePaid ? "Yes" : "No"}</span>
+        <div ref={receiptRef} className="receipt-card">
+          <div className="receipt-header text-center border-b-2 border-forest/30 pb-4 mb-4">
+            <img src={bkaLogo} alt="BKA Logo" className="receipt-logo mx-auto" />
+            <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संघ</h2>
+            <h3 className="text-xs md:text-sm font-bold text-forest mt-1">BHARATIYA KISAN ASSOCIATION</h3>
+          </div>
+
+          <div className="receipt-info space-y-1 text-sm md:text-base text-black">
+            <div className="row">
+              <span className="font-semibold text-gray-500">BKA ID</span>
+              <strong className="text-forest font-bold">{member.memberId}</strong>
+            </div>
+            <div className="row">
+              <span className="font-semibold text-gray-500">Name</span>
+              <strong>{member.name}</strong>
+            </div>
+            <div className="row">
+              <span className="font-semibold text-gray-500">District</span>
+              <strong>{member.district}</strong>
+            </div>
+            <div className="row">
+              <span className="font-semibold text-gray-500">Address</span>
+              <strong className="text-right max-w-[65%] leading-snug">{member.address || "—"}</strong>
+            </div>
+            <div className="row">
+              <span className="font-semibold text-gray-500">Phone</span>
+              <strong>{member.phone}</strong>
+            </div>
+            <div className="row !border-none">
+              <span className="font-semibold text-gray-500">Date</span>
+              <strong>{new Date(member.timestamp).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</strong>
+            </div>
+          </div>
         </div>
+
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <button
+            type="button"
+            onClick={downloadPDF}
+            className="admin-confirm-btn confirm flex-1 text-center"
+          >
+            📥 Download PDF
+          </button>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="admin-confirm-btn confirm flex-1 text-center"
+          >
+            🖨️ Print
+          </button>
+        </div>
+
         <div className="admin-confirm-actions" style={{ marginTop: "1rem" }}>
           <button type="button" className="admin-confirm-btn cancel" onClick={onClose}>Close</button>
-          {phone.length === 10 && (
-            <a href={waUrl} target="_blank" rel="noopener noreferrer" className="admin-confirm-btn confirm" style={{ textDecoration: "none", textAlign: "center", lineHeight: "2.25" }}>WhatsApp</a>
-          )}
         </div>
       </div>
     </div>
