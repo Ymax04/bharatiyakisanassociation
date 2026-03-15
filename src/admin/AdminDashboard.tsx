@@ -297,7 +297,7 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMessage, setPasswordMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [passwordLoading, setPasswordLoading] = useState(false);
-  const [showChangePasswordSection, setShowChangePasswordSection] = useState(false);
+
   const [showCurrentPass, setShowCurrentPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
@@ -754,119 +754,7 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
         ))}
       </div>
 
-      {!showChangePasswordSection ? (
-        <div className="admin-table-card admin-mini-card" style={{ maxWidth: "320px" }}>
-          <button
-            type="button"
-            onClick={() => setShowChangePasswordSection(true)}
-            className="admin-export-pdf-btn"
-            style={{ width: "100%", minHeight: "var(--admin-touch, 44px)", fontSize: "0.9375rem" }}
-          >
-            🔐 Change Admin Password
-          </button>
-        </div>
-      ) : (
-        <div className="admin-table-card admin-mini-card admin-password-card">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
-            <h3 className="admin-mini-card-title" style={{ margin: 0 }}>Change Admin Password</h3>
-            <button
-              type="button"
-              onClick={() => { setShowChangePasswordSection(false); setPasswordMessage(null); setCurrentPassword(""); setNewPassword(""); setConfirmPassword(""); }}
-              className="admin-confirm-btn cancel"
-              style={{ minHeight: "var(--admin-touch, 44px)", padding: "0.5rem 1rem" }}
-            >
-              Close
-            </button>
-          </div>
-          <div className="admin-password-fields">
-            <div className="admin-field">
-              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Current Password</label>
-              <div className="admin-password-input-wrap">
-                <input
-                  type={showCurrentPass ? "text" : "password"}
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="admin-search admin-password-input"
-                  placeholder="Current password"
-                  disabled={passwordLoading}
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowCurrentPass((p) => !p)}
-                  className="admin-password-toggle"
-                  aria-label={showCurrentPass ? "Hide password" : "Show password"}
-                >
-                  {showCurrentPass ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-            <div className="admin-field">
-              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>New Password</label>
-              <div className="admin-password-input-wrap">
-                <input
-                  type={showNewPass ? "text" : "password"}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="admin-search admin-password-input"
-                  placeholder="New password"
-                  disabled={passwordLoading}
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPass((p) => !p)}
-                  className="admin-password-toggle"
-                  aria-label={showNewPass ? "Hide password" : "Show password"}
-                >
-                  {showNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-            <div className="admin-field">
-              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Confirm New Password</label>
-              <div className="admin-password-input-wrap">
-                <input
-                  type={showConfirmPass ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="admin-search admin-password-input"
-                  placeholder="Confirm new password"
-                  disabled={passwordLoading}
-                  autoComplete="new-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPass((p) => !p)}
-                  className="admin-password-toggle"
-                  aria-label={showConfirmPass ? "Hide password" : "Show password"}
-                >
-                  {showConfirmPass ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-            {passwordMessage && (
-              <p style={{
-                marginTop: "0.5rem",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                color: passwordMessage.type === "success" ? "var(--admin-primary, #166534)" : "#b91c1c"
-              }}>
-                {passwordMessage.text}
-              </p>
-            )}
-            <button
-              type="button"
-              onClick={handleChangePassword}
-              disabled={passwordLoading}
-              className="admin-export-pdf-btn"
-              style={{ marginTop: "0.5rem", width: "100%", minHeight: "var(--admin-touch, 44px)" }}
-            >
-              {passwordLoading ? "Updating…" : "Update Password"}
-            </button>
-          </div>
-        </div>
-      )}
+
 
       <div className="admin-charts-grid">
         <div className="admin-chart-card admin-chart-card-modern">
