@@ -21,7 +21,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
       console.log("Sending login request...", { adminId, password });
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        redirect: "follow",
         body: JSON.stringify({
           action: "adminLogin",
           username: adminId,
@@ -33,8 +33,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
       const responseText = await response.text();
       console.log("Raw response text:", responseText);
 
-      // Google Apps Script sometimes returns plain text or a different format
-      // Let's first try to parse as JSON
       let isSuccess = false;
       try {
         const result = JSON.parse(responseText);
@@ -42,8 +40,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
         isSuccess = result.success === true || result.success === "true";
       } catch (parseError) {
         console.log("Failed to parse JSON, falling back to text check");
-        // Fallback: check if the text literally says "success" or similar
-        // based on how other endpoints in this app return "Updated" or "Deleted"
         if (responseText.trim().toLowerCase() === "true" || responseText.includes('"success":true')) {
           isSuccess = true;
         }

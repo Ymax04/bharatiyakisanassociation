@@ -249,7 +249,7 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
       .then((res) => res.json())
       .then((data) => {
         const list = Array.isArray(data) ? data : [];
-        setMembers(list.map(mapRowToMember));
+        setMembers(list.map(mapRowToMember).sort((a, b) => b.timestamp - a.timestamp));
       })
       .catch((err) => console.error("API Error:", err));
   };
