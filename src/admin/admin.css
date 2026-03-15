@@ -1244,6 +1244,61 @@
   }
 }
 
+/* ─── Change Password card (mobile friendly, show/hide password) ─── */
+.admin-password-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-password-fields .admin-field {
+  margin-bottom: 1rem;
+}
+
+.admin-password-input-wrap {
+  position: relative;
+  display: block;
+}
+
+.admin-password-input-wrap .admin-password-input {
+  padding-right: 2.75rem;
+  min-height: var(--admin-touch);
+  box-sizing: border-box;
+}
+
+.admin-password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: var(--admin-text-muted);
+  min-width: var(--admin-touch);
+  min-height: var(--admin-touch);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--admin-radius-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-password-toggle:hover {
+  color: var(--admin-primary);
+  background: var(--admin-primary-bg);
+}
+
+@media (max-width: 768px) {
+  .admin-password-card {
+    max-width: 100%;
+  }
+
+  .admin-password-input-wrap .admin-password-input {
+    font-size: 16px; /* prevents zoom on iOS */
+  }
+}
+
 /* Very small phones */
 @media (max-width: 360px) {
   .admin-stats-grid,

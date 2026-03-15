@@ -4,7 +4,7 @@ import "./admin.css";
 import AdminDashboard from "./AdminDashboard";
 import logo from "./logo.jpeg";
 
-type View = "dashboard" | "members";
+type View = "dashboard" | "members" | "changePassword";
 
 export default function AdminApp() {
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ export default function AdminApp() {
   const navItems: { label: string; icon: string; view?: View; logout?: boolean }[] = [
     { label: "Dashboard", icon: "📊", view: "dashboard" },
     { label: "Sadasya", icon: "👥", view: "members" },
+    { label: "Change Password", icon: "🔐", view: "changePassword" },
     { label: "Logout", icon: "🚪", logout: true },
   ];
 
@@ -38,7 +39,7 @@ export default function AdminApp() {
         <div className="admin-topbar">
           <button className="admin-menu-toggle" onClick={() => setSidebarOpen(true)}>☰</button>
           <span className="admin-topbar-title">
-            {view === "dashboard" ? "Dashboard" : "Sadasya Suchi"}
+            {view === "dashboard" ? "Dashboard" : view === "members" ? "Sadasya Suchi" : "Change Password"}
           </span>
         </div>
 

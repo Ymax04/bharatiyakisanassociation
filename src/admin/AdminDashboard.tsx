@@ -7,6 +7,7 @@ import { Bar, Pie } from "react-chartjs-2";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Helmet } from "react-helmet-async";
+import { Eye, EyeOff } from "lucide-react";
 import bkaLogo from "@/assets/bka-logo.jpg";
 import { API_URL } from "../config";
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
@@ -280,7 +281,7 @@ function MemberDetailModal({ member, onClose }: { member: Member; onClose: () =>
   );
 }
 
-export default function AdminDashboard({ view }: { view: "dashboard" | "members" }) {
+export default function AdminDashboard({ view }: { view: "dashboard" | "members" | "changePassword" }) {
   const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [search, setSearch] = useState("");
@@ -291,8 +292,60 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const tableCardRef = useRef<HTMLDivElement>(null);
 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showChangePasswordSection, setShowChangePasswordSection] = useState(false);
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+
   const addLog = (msg: string) => {
     setActivityLog((prev) => [msg, ...prev].slice(0, 10));
+  };
+
+  const handleChangePassword = async () => {
+    setPasswordMessage(null);
+    if (!newPassword.trim()) {
+      setPasswordMessage({ type: "error", text: "New password cannot be empty." });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ type: "error", text: "New passwords do not match" });
+      return;
+    }
+    const token = localStorage.getItem("adminSession");
+    if (!token) {
+      navigate("/admin-login");
+      return;
+    }
+    setPasswordLoading(true);
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify({
+          action: "changePassword",
+          token,
+          newPassword: newPassword.trim()
+        })
+      });
+      const result = await response.text();
+      if (result.trim() === "PasswordChanged") {
+        setPasswordMessage({ type: "success", text: "Password updated successfully" });
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        setPasswordMessage({ type: "error", text: result.trim() || "Failed to update password." });
+      }
+    } catch (err) {
+      setPasswordMessage({ type: "error", text: "Network error. Please try again." });
+    } finally {
+      setPasswordLoading(false);
+    }
   };
 
   const districts = Array.from(new Set(members.map((m) => m.district).filter(Boolean))).sort();
@@ -595,6 +648,91 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
     );
   }
 
+  if (view === "changePassword") {
+    return (
+      <>
+        <Helmet>
+          <title>Change Password - Admin | Bharatiya Kisan Association</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <div className="admin-main-header">
+          <h2>Change Password</h2>
+          <p>Update admin login password</p>
+        </div>
+        <div className="admin-table-card admin-mini-card admin-password-card">
+          <h3 className="admin-mini-card-title" style={{ marginBottom: "1rem" }}>Change Admin Password</h3>
+          <div className="admin-password-fields">
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Current Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showCurrentPass ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="Current password"
+                  disabled={passwordLoading}
+                  autoComplete="current-password"
+                />
+                <button type="button" onClick={() => setShowCurrentPass((p) => !p)} className="admin-password-toggle" aria-label={showCurrentPass ? "Hide password" : "Show password"}>
+                  {showCurrentPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>New Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showNewPass ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="New password"
+                  disabled={passwordLoading}
+                  autoComplete="new-password"
+                />
+                <button type="button" onClick={() => setShowNewPass((p) => !p)} className="admin-password-toggle" aria-label={showNewPass ? "Hide password" : "Show password"}>
+                  {showNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Confirm New Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showConfirmPass ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="Confirm new password"
+                  disabled={passwordLoading}
+                  autoComplete="new-password"
+                />
+                <button type="button" onClick={() => setShowConfirmPass((p) => !p)} className="admin-password-toggle" aria-label={showConfirmPass ? "Hide password" : "Show password"}>
+                  {showConfirmPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            {passwordMessage && (
+              <p style={{ marginTop: "0.5rem", fontSize: "0.875rem", fontWeight: 500, color: passwordMessage.type === "success" ? "var(--admin-primary, #166534)" : "#b91c1c" }}>
+                {passwordMessage.text}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={handleChangePassword}
+              disabled={passwordLoading}
+              className="admin-export-pdf-btn"
+              style={{ marginTop: "0.5rem", width: "100%", minHeight: "var(--admin-touch, 44px)" }}
+            >
+              {passwordLoading ? "Updating…" : "Update Password"}
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>
@@ -615,6 +753,120 @@ export default function AdminDashboard({ view }: { view: "dashboard" | "members"
           </div>
         ))}
       </div>
+
+      {!showChangePasswordSection ? (
+        <div className="admin-table-card admin-mini-card" style={{ maxWidth: "320px" }}>
+          <button
+            type="button"
+            onClick={() => setShowChangePasswordSection(true)}
+            className="admin-export-pdf-btn"
+            style={{ width: "100%", minHeight: "var(--admin-touch, 44px)", fontSize: "0.9375rem" }}
+          >
+            🔐 Change Admin Password
+          </button>
+        </div>
+      ) : (
+        <div className="admin-table-card admin-mini-card admin-password-card">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
+            <h3 className="admin-mini-card-title" style={{ margin: 0 }}>Change Admin Password</h3>
+            <button
+              type="button"
+              onClick={() => { setShowChangePasswordSection(false); setPasswordMessage(null); setCurrentPassword(""); setNewPassword(""); setConfirmPassword(""); }}
+              className="admin-confirm-btn cancel"
+              style={{ minHeight: "var(--admin-touch, 44px)", padding: "0.5rem 1rem" }}
+            >
+              Close
+            </button>
+          </div>
+          <div className="admin-password-fields">
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Current Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showCurrentPass ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="Current password"
+                  disabled={passwordLoading}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPass((p) => !p)}
+                  className="admin-password-toggle"
+                  aria-label={showCurrentPass ? "Hide password" : "Show password"}
+                >
+                  {showCurrentPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>New Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showNewPass ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="New password"
+                  disabled={passwordLoading}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPass((p) => !p)}
+                  className="admin-password-toggle"
+                  aria-label={showNewPass ? "Hide password" : "Show password"}
+                >
+                  {showNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="admin-field">
+              <label className="admin-detail-label" style={{ display: "block", marginBottom: "0.375rem", fontSize: "0.8125rem" }}>Confirm New Password</label>
+              <div className="admin-password-input-wrap">
+                <input
+                  type={showConfirmPass ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="admin-search admin-password-input"
+                  placeholder="Confirm new password"
+                  disabled={passwordLoading}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPass((p) => !p)}
+                  className="admin-password-toggle"
+                  aria-label={showConfirmPass ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            {passwordMessage && (
+              <p style={{
+                marginTop: "0.5rem",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                color: passwordMessage.type === "success" ? "var(--admin-primary, #166534)" : "#b91c1c"
+              }}>
+                {passwordMessage.text}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={handleChangePassword}
+              disabled={passwordLoading}
+              className="admin-export-pdf-btn"
+              style={{ marginTop: "0.5rem", width: "100%", minHeight: "var(--admin-touch, 44px)" }}
+            >
+              {passwordLoading ? "Updating…" : "Update Password"}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="admin-charts-grid">
         <div className="admin-chart-card admin-chart-card-modern">
