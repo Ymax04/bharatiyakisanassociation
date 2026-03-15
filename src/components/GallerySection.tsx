@@ -7,6 +7,7 @@ import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/gallery-5.jpg";
+import g6 from "@/assets/gallery-6.jpg";
 
 const images = [
   { src: g1, alt: "Farmer Rally", span: "col-span-2 row-span-1" },
@@ -14,6 +15,7 @@ const images = [
   { src: g3, alt: "March for Rights", span: "col-span-1 row-span-1" },
   { src: g4, alt: "Farmer's Hands", span: "col-span-1 row-span-1" },
   { src: g5, alt: "Community Meeting", span: "col-span-2 row-span-1" },
+  { src: g6, alt: "Event Moment", span: "col-span-1 row-span-1" },
   { src: g1, alt: "Rally 2", span: "col-span-1 row-span-1" },
   { src: g3, alt: "March 2", span: "col-span-1 row-span-1" },
   { src: g4, alt: "Hands 2", span: "col-span-1 row-span-1" },
