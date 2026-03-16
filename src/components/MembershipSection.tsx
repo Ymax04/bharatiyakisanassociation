@@ -288,13 +288,13 @@ const MembershipSection = () => {
             >
               <div className="mb-6 text-center">
                 <h3 className="text-xl md:text-2xl font-bold text-green-600 mb-2">Registration Successful!</h3>
-                <p className="text-sm md:text-base text-muted-foreground">Your membership receipt has been generated.<br/>Please download or print it for your records.</p>
+                <p className="text-sm md:text-base text-muted-foreground">Your membership receipt has been generated.<br />Please download or print it for your records.</p>
               </div>
 
               <div ref={receiptRef} className="receipt-card">
                 <div className="receipt-header text-center border-b-2 border-forest/30 pb-4 mb-4">
                   <img src={bkaLogo} alt="BKA Logo" className="receipt-logo" />
-                  <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संघ</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-forest mt-2 text-hindi">भारतीय किसान संगठन</h2>
                   <h3 className="text-xs md:text-sm font-bold text-forest mt-1">BHARATIYA KISAN ASSOCIATION</h3>
                 </div>
 

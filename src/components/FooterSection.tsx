@@ -35,7 +35,7 @@ const FooterSection = () => {
               </div>
               <div className="rounded-xl bg-background/10 p-3 border border-white/10">
                 <p className="font-semibold text-white">मुख्य कार्यालय</p>
-                <p className="text-[11px]">ग्राम डुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।</p>
+                <p className="text-[11px]">ग्राम दुबर, पोस्ट कुसमरा, जिला मैनपुरी, उत्तर प्रदेश।</p>
               </div>
             </div>
           </div>
